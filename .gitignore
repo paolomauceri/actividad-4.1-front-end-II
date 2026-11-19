@@ -1,0 +1,30 @@
+# Herramientas personales / asistentes
+.claude/
+.superpowers/
+
+# Dependencias
+node_modules/
+
+# Builds
+dist/
+dev-dist/
+.vite/
+
+# Variables de entorno (nunca subir secretos)
+.env
+.env.test
+.env.local
+
+# Logs y reportes
+*.log
+npm-debug.log*
+coverage/
+playwright-report/
+test-results/
+
+# Sistema operativo / editores
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/*
+!.vscode/extensions.json

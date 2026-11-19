@@ -1,0 +1,19 @@
+{
+  "name": "podio-torneos",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Podio: PWA para la gestión de torneos de natación, aguas abiertas, acuatlón, triatlón y atletismo",
+  "author": "Brayan Teran y Paolo Mauceri",
+  "scripts": {
+    "install:all": "npm install && npm install --prefix server && npm install --prefix client",
+    "dev": "concurrently -n api,web -c blue,green \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "db:reset": "npm run db:reset --prefix server",
+    "test": "npm test --prefix server && npm test --prefix client"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
