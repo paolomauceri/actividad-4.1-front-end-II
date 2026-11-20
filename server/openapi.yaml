@@ -1,0 +1,387 @@
+openapi: 3.0.3
+info:
+  title: Podio API
+  version: 0.1.0
+  description: |
+    API REST de **Podio**, aplicación para la gestión de torneos de natación,
+    aguas abiertas, acuatlón, triatlón y atletismo.
+
+    **Autenticación:** los endpoints protegidos requieren el header
+    `Authorization: Bearer <token>`. Obtén el token con `POST /api/auth/login`
+    y pégalo en el botón **Authorize**.
+
+    **Errores:** todas las respuestas de error usan el formato
+    `{ "error": { "code", "message", "details"? } }`.
+
+    Credenciales de prueba (seed): `admin@podio.local` / `Admin123!`.
+  contact:
+    name: Brayan Teran y Paolo Mauceri
+servers:
+  - url: http://localhost:3000
+    description: Desarrollo local
+tags:
+  - name: Auth
+    description: Registro, inicio de sesión y sesión actual
+  - name: Usuarios
+    description: Gestión de usuarios (solo ADMIN)
+  - name: Dashboard
+    description: Indicadores del panel de administración (solo ADMIN)
+  - name: Torneos
+    description: Consultas públicas de torneos
+  - name: Sistema
+    description: Estado del servicio
+
+paths:
+  /api/health:
+    get:
+      tags: [Sistema]
+      summary: Estado de la API y de la base de datos
+      responses:
+        '200':
+          description: Todo funciona
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, example: ok }
+                  db: { type: string, example: ok }
+        '503':
+          $ref: '#/components/responses/DbUnavailable'
+
+  /api/auth/register:
+    post:
+      tags: [Auth]
+      summary: Registro público de un atleta
+      description: |
+        Crea una cuenta con rol **ATLETA** y su perfil deportivo en una sola transacción.
+        Cualquier campo `rol` enviado se ignora. Devuelve el token para iniciar sesión de inmediato.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/RegisterRequest' }
+      responses:
+        '201':
+          description: Atleta registrado
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AuthResponse' }
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '409':
+          description: El correo (`EMAIL_TAKEN`) o el documento (`DOCUMENTO_TAKEN`) ya existen
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+              examples:
+                email:
+                  value: { error: { code: EMAIL_TAKEN, message: Este correo ya está registrado, details: [{ campo: email, mensaje: Este correo ya está registrado }] } }
+                documento:
+                  value: { error: { code: DOCUMENTO_TAKEN, message: Este documento ya está registrado, details: [{ campo: documento, mensaje: Este documento ya está registrado }] } }
+
+  /api/auth/login:
+    post:
+      tags: [Auth]
+      summary: Iniciar sesión
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/LoginRequest' }
+      responses:
+        '200':
+          description: Sesión iniciada
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AuthResponse' }
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          description: Correo o contraseña incorrectos (`INVALID_CREDENTIALS`)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+              example: { error: { code: INVALID_CREDENTIALS, message: Correo o contraseña incorrectos } }
+        '403':
+          description: Cuenta desactivada (`USER_INACTIVE`)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+              example: { error: { code: USER_INACTIVE, message: Tu cuenta está desactivada. Contacta al administrador. } }
+
+  /api/auth/me:
+    get:
+      tags: [Auth]
+      summary: Usuario de la sesión actual
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Datos del usuario autenticado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  usuario: { $ref: '#/components/schemas/UsuarioPublico' }
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/usuarios:
+    get:
+      tags: [Usuarios]
+      summary: Listar usuarios (paginado)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: query
+          name: page
+          schema: { type: integer, minimum: 1, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+        - in: query
+          name: rol
+          schema: { type: string, enum: [ADMIN, JUEZ, ATLETA] }
+      responses:
+        '200':
+          description: Página de usuarios (más recientes primero)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PaginatedUsuarios' }
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    post:
+      tags: [Usuarios]
+      summary: Crear un usuario JUEZ o ADMIN
+      description: Solo un administrador puede crear jueces y otros administradores. Los atletas se registran solos.
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CreateUsuarioRequest' }
+      responses:
+        '201':
+          description: Usuario creado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  usuario: { $ref: '#/components/schemas/UsuarioPublico' }
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          description: El correo ya existe (`EMAIL_TAKEN`)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /api/dashboard/resumen:
+    get:
+      tags: [Dashboard]
+      summary: Resumen del panel de administración
+      description: Conteos generales, próximas 5 pruebas, inscripciones por deporte y los 5 usuarios más recientes.
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Resumen calculado en tiempo real desde la base de datos
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/DashboardResumen' }
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /api/torneos/proximos:
+    get:
+      tags: [Torneos]
+      summary: Próximos torneos (público)
+      description: Torneos publicados que aún no terminan, ordenados por fecha de inicio (máximo 6). Se usa en la página de inicio.
+      responses:
+        '200':
+          description: Lista de torneos
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/TorneoResumen' }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    RegisterRequest:
+      type: object
+      required: [nombre, apellido, email, password, documento, fechaNacimiento, sexo]
+      properties:
+        nombre: { type: string, minLength: 2, maxLength: 60, example: Ana }
+        apellido: { type: string, minLength: 2, maxLength: 60, example: Gómez }
+        email: { type: string, format: email, maxLength: 120, example: ana.gomez@correo.com }
+        password:
+          type: string
+          minLength: 8
+          maxLength: 72
+          description: Al menos una letra y un número
+          example: Segura123
+        documento: { type: string, minLength: 5, maxLength: 20, example: '24567890' }
+        fechaNacimiento: { type: string, format: date, example: '2000-05-20' }
+        sexo: { type: string, enum: [M, F], example: F }
+        club: { type: string, maxLength: 80, nullable: true, example: Club Delfines }
+        telefono: { type: string, maxLength: 20, nullable: true, example: '555-0123' }
+
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email: { type: string, format: email, example: admin@podio.local }
+        password: { type: string, example: Admin123! }
+
+    CreateUsuarioRequest:
+      type: object
+      required: [nombre, apellido, email, password, rol]
+      properties:
+        nombre: { type: string, minLength: 2, maxLength: 60, example: Pedro }
+        apellido: { type: string, minLength: 2, maxLength: 60, example: Salas }
+        email: { type: string, format: email, example: pedro.salas@podio.local }
+        password: { type: string, minLength: 8, maxLength: 72, example: JuezNuevo1 }
+        rol: { type: string, enum: [ADMIN, JUEZ], example: JUEZ }
+
+    UsuarioPublico:
+      type: object
+      properties:
+        id: { type: integer, example: 4 }
+        nombre: { type: string, example: Valentina }
+        apellido: { type: string, example: Rojas }
+        email: { type: string, example: valentina@podio.local }
+        rol: { type: string, enum: [ADMIN, JUEZ, ATLETA] }
+        activo: { type: boolean, example: true }
+        creadoEn: { type: string, example: '2026-09-10 18:12:00' }
+        atleta:
+          type: object
+          description: Solo presente cuando el rol es ATLETA
+          properties:
+            documento: { type: string, example: '30111222' }
+            fechaNacimiento: { type: string, format: date, example: '2008-03-14' }
+            sexo: { type: string, enum: [M, F] }
+            club: { type: string, nullable: true, example: Club Delfines }
+            telefono: { type: string, nullable: true, example: '555-0104' }
+
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT con validez de 8 horas
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        usuario: { $ref: '#/components/schemas/UsuarioPublico' }
+
+    PaginatedUsuarios:
+      type: object
+      properties:
+        data:
+          type: array
+          items: { $ref: '#/components/schemas/UsuarioPublico' }
+        page: { type: integer, example: 1 }
+        limit: { type: integer, example: 20 }
+        total: { type: integer, example: 15 }
+
+    DashboardResumen:
+      type: object
+      properties:
+        torneosActivos: { type: integer, description: Torneos ABIERTOS o EN_CURSO, example: 2 }
+        atletas: { type: integer, example: 12 }
+        inscripciones: { type: integer, description: Inscripciones no anuladas, example: 45 }
+        pruebasProximas: { type: integer, example: 6 }
+        proximasPruebas:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: integer, example: 5 }
+              nombre: { type: string, example: Triatlón sprint (750 m + 20 km + 5 km) }
+              torneo: { type: string, example: Circuito Costa Triatlón y Atletismo 2026 }
+              deporte: { type: string, example: Triatlón }
+              fechaHora: { type: string, example: '2026-11-21 07:00:00' }
+              cupo: { type: integer, nullable: true, example: 100 }
+              inscritos: { type: integer, example: 6 }
+        inscripcionesPorDeporte:
+          type: array
+          items:
+            type: object
+            properties:
+              deporte: { type: string, example: Natación }
+              total: { type: integer, example: 20 }
+        usuariosRecientes:
+          type: array
+          items: { $ref: '#/components/schemas/UsuarioPublico' }
+
+    TorneoResumen:
+      type: object
+      properties:
+        id: { type: integer, example: 1 }
+        nombre: { type: string, example: Copa Aguas Abiertas Lago Azul 2026 }
+        descripcion: { type: string, nullable: true }
+        sede: { type: string, example: Lago Azul, Playa Norte }
+        fechaInicio: { type: string, format: date, example: '2026-12-12' }
+        fechaFin: { type: string, format: date, example: '2026-12-13' }
+        estado: { type: string, enum: [ABIERTO, EN_CURSO, FINALIZADO] }
+        pruebas: { type: integer, example: 3 }
+        deportes:
+          type: array
+          items: { type: string }
+          example: [Acuatlón, Aguas abiertas]
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code: { type: string, example: VALIDATION_ERROR }
+            message: { type: string, example: Datos inválidos }
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  campo: { type: string, example: password }
+                  mensaje: { type: string, example: La contraseña debe tener entre 8 y 72 caracteres e incluir al menos una letra y un número }
+
+  responses:
+    ValidationError:
+      description: Datos inválidos (`VALIDATION_ERROR`)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    Unauthorized:
+      description: Falta el token, es inválido o expiró (`UNAUTHORIZED`)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example: { error: { code: UNAUTHORIZED, message: Debes iniciar sesión para acceder a este recurso. } }
+    Forbidden:
+      description: El rol del usuario no tiene permiso (`FORBIDDEN`)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example: { error: { code: FORBIDDEN, message: No tienes permisos para realizar esta acción. } }
+    DbUnavailable:
+      description: La base de datos no responde (`DB_UNAVAILABLE`)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }

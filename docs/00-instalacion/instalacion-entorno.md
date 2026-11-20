@@ -95,6 +95,8 @@ npm run dev                  # levanta API (3000) y web (5173)
 | Síntoma | Causa probable | Solución |
 |---|---|---|
 | `node no se reconoce como comando` | Terminal abierta antes de instalar | Cierra y abre la terminal / VS Code |
+| `npm.ps1 no se puede cargar ... la ejecución de scripts está deshabilitada` | Política de ejecución de PowerShell | Ejecutar una vez `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned` (o usar `npm.cmd` en lugar de `npm`) |
+| `El operador '<' está reservado para uso futuro` | PowerShell no acepta `<` | Usar `mysql -u root -p -e "source archivo.sql"` |
 | `403 Oracle Export Error` al descargar | Bloqueo regional de Oracle | Usar MariaDB (sección 2.1) |
 | `ECONNREFUSED 127.0.0.1:3306` | El servicio de base de datos está detenido | *Servicios de Windows → MySQL84 (o MariaDB) → Iniciar* |
 | `ER_ACCESS_DENIED_ERROR` | Contraseña de root incorrecta en `.env` | Revisa `DB_PASSWORD` en `server/.env` |
