@@ -1,0 +1,24 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.fila {
+  display: grid;
+  gap: var(--space-4);
+}
+
+@media (min-width: 520px) {
+  .fila {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+.acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
