@@ -31,6 +31,16 @@ Aplicación web progresiva para administrar torneos de **natación, aguas abiert
 └─ scripts/     Utilidades (capturas, generación del PDF)
 ```
 
+## Documentación de la entrega
+
+| Entregable | Archivo |
+|---|---|
+| **Documento final (PDF)** | [docs/entrega/Entrega-Podio.pdf](docs/entrega/Entrega-Podio.pdf) — se regenera con `npm run pdf` |
+| Planificación SCRUM y backlog para Jira | [docs/01-scrum/](docs/01-scrum/) |
+| Wireframes, mapa de navegación y guía de estilo | [docs/02-ui-ux/](docs/02-ui-ux/) |
+| Diagrama de base de datos | [docs/03-base-de-datos/](docs/03-base-de-datos/) |
+| Manual técnico (diagramas de flujo, capturas, instalación) | [docs/04-manual-tecnico/manual-tecnico.md](docs/04-manual-tecnico/manual-tecnico.md) |
+
 ## Inicio rápido
 
 1. Instala el entorno siguiendo [docs/00-instalacion/instalacion-entorno.md](docs/00-instalacion/instalacion-entorno.md).

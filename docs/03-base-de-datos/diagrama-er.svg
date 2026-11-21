@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1780" height="776" viewBox="0 0 1780 776">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="20" y="34" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="20" font-weight="800" fill="#1b2633" text-anchor="start">Podio — Diagrama Entidad-Relación (torneos_db)</text>
+<text x="20" y="56" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" fill="#5b6878" text-anchor="start">MySQL 8 · InnoDB · utf8mb4</text>
+<path d="M60 163H38V523H60" fill="none" stroke="#5b6878" stroke-width="1.4"/>
+<circle cx="60" cy="523" r="3" fill="#5b6878"/>
+<text x="50" y="158" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="700" fill="#0c6b80" text-anchor="middle">1</text>
+<text x="48" y="518" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="700" fill="#c2410c" text-anchor="middle">0..1</text>
+<path d="M440 163H468V345H480" fill="none" stroke="#5b6878" stroke-width="1.4"/>
+<circle cx="480" cy="345" r="3" fill="#5b6878"/>
+<text x="450" y="158" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="700" fill="#0c6b80" text-anchor="middle">1</text>
+<text x="466" y="340" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="700" fill="#c2410c" text-anchor="middle">N</text>
+<path d="M440 163H477V557H1360" fill="none" stroke="#5b6878" stroke-width="1.4"/>
+<circle cx="1360" cy="557" r="3" fill="#5b6878"/>
+<text x="450" y="158" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="700" fill="#0c6b80" text-anchor="middle">1</text>
+<text x="1346" y="552" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="700" fill="#c2410c" text-anchor="middle">N</text>
+<path d="M480 163H458V549H480" fill="none" stroke="#5b6878" stroke-width="1.4"/>
+<circle cx="480" cy="549" r="3" fill="#5b6878"/>
+<text x="470" y="158" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="700" fill="#0c6b80" text-anchor="middle">1</text>
+<text x="468" y="544" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="700" fill="#c2410c" text-anchor="middle">N</text>
+<path d="M860 163H870V379H920" fill="none" stroke="#5b6878" stroke-width="1.4"/>
+<circle cx="920" cy="379" r="3" fill="#5b6878"/>
+<text x="870" y="158" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="700" fill="#0c6b80" text-anchor="middle">1</text>
+<text x="906" y="374" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="700" fill="#c2410c" text-anchor="middle">N</text>
+<path d="M920 163H898V405H920" fill="none" stroke="#5b6878" stroke-width="1.4"/>
+<circle cx="920" cy="405" r="3" fill="#5b6878"/>
+<text x="910" y="158" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="700" fill="#0c6b80" text-anchor="middle">1</text>
+<text x="908" y="400" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="700" fill="#c2410c" text-anchor="middle">N</text>
+<path d="M1300 353H1328V189H1360" fill="none" stroke="#5b6878" stroke-width="1.4"/>
+<circle cx="1360" cy="189" r="3" fill="#5b6878"/>
+<text x="1310" y="348" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="700" fill="#0c6b80" text-anchor="middle">1</text>
+<text x="1346" y="184" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="700" fill="#c2410c" text-anchor="middle">N</text>
+<path d="M440 523H477V215H1360" fill="none" stroke="#5b6878" stroke-width="1.4"/>
+<circle cx="1360" cy="215" r="3" fill="#5b6878"/>
+<text x="450" y="518" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="700" fill="#0c6b80" text-anchor="middle">1</text>
+<text x="1346" y="210" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="700" fill="#c2410c" text-anchor="middle">N</text>
+<path d="M860 523H906V241H1360" fill="none" stroke="#5b6878" stroke-width="1.4"/>
+<circle cx="1360" cy="241" r="3" fill="#5b6878"/>
+<text x="870" y="518" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="700" fill="#0c6b80" text-anchor="middle">1</text>
+<text x="1346" y="236" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="700" fill="#c2410c" text-anchor="middle">N</text>
+<path d="M1360 163H1338V479H1360" fill="none" stroke="#5b6878" stroke-width="1.4"/>
+<circle cx="1360" cy="479" r="3" fill="#5b6878"/>
+<text x="1350" y="158" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="700" fill="#0c6b80" text-anchor="middle">1</text>
+<text x="1348" y="474" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="700" fill="#c2410c" text-anchor="middle">0..1</text>
+<rect x="60" y="120" width="380" height="264" rx="6" fill="#ffffff" stroke="#6c8ebf" stroke-width="1.5"/>
+<rect x="60" y="120" width="380" height="30" rx="6" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="250" y="140" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#1b2633" text-anchor="middle">usuarios</text>
+<text x="68" y="167" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start">PK</text>
+<text x="120" y="167" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" fill="#1b2633" text-anchor="start">id</text>
+<text x="432" y="167" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">INT UNSIGNED</text>
+<line x1="60" y1="176" x2="440" y2="176" stroke="#eef2f7"/>
+<text x="68" y="193" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="120" y="193" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">nombre</text>
+<text x="432" y="193" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">VARCHAR(60)</text>
+<line x1="60" y1="202" x2="440" y2="202" stroke="#eef2f7"/>
+<text x="68" y="219" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="120" y="219" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">apellido</text>
+<text x="432" y="219" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">VARCHAR(60)</text>
+<line x1="60" y1="228" x2="440" y2="228" stroke="#eef2f7"/>
+<text x="68" y="245" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start">UQ</text>
+<text x="120" y="245" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">email</text>
+<text x="432" y="245" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">VARCHAR(120)</text>
+<line x1="60" y1="254" x2="440" y2="254" stroke="#eef2f7"/>
+<text x="68" y="271" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="120" y="271" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">password_hash</text>
+<text x="432" y="271" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">CHAR(60)</text>
+<line x1="60" y1="280" x2="440" y2="280" stroke="#eef2f7"/>
+<text x="68" y="297" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="120" y="297" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">rol</text>
+<text x="432" y="297" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">ENUM('ADMIN','JUEZ','ATLETA')</text>
+<line x1="60" y1="306" x2="440" y2="306" stroke="#eef2f7"/>
+<text x="68" y="323" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="120" y="323" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">activo</text>
+<text x="432" y="323" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">TINYINT(1)</text>
+<line x1="60" y1="332" x2="440" y2="332" stroke="#eef2f7"/>
+<text x="68" y="349" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="120" y="349" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">creado_en</text>
+<text x="432" y="349" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">DATETIME</text>
+<line x1="60" y1="358" x2="440" y2="358" stroke="#eef2f7"/>
+<text x="68" y="375" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="120" y="375" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">actualizado_en</text>
+<text x="432" y="375" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">DATETIME</text>
+<rect x="60" y="480" width="380" height="186" rx="6" fill="#ffffff" stroke="#6c8ebf" stroke-width="1.5"/>
+<rect x="60" y="480" width="380" height="30" rx="6" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="250" y="500" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#1b2633" text-anchor="middle">atletas</text>
+<text x="68" y="527" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start">PK,FK</text>
+<text x="120" y="527" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" fill="#1b2633" text-anchor="start">usuario_id</text>
+<text x="432" y="527" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">INT UNSIGNED</text>
+<line x1="60" y1="536" x2="440" y2="536" stroke="#eef2f7"/>
+<text x="68" y="553" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start">UQ</text>
+<text x="120" y="553" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">documento</text>
+<text x="432" y="553" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">VARCHAR(20)</text>
+<line x1="60" y1="562" x2="440" y2="562" stroke="#eef2f7"/>
+<text x="68" y="579" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="120" y="579" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">fecha_nacimiento</text>
+<text x="432" y="579" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">DATE</text>
+<line x1="60" y1="588" x2="440" y2="588" stroke="#eef2f7"/>
+<text x="68" y="605" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="120" y="605" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">sexo</text>
+<text x="432" y="605" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">ENUM('M','F')</text>
+<line x1="60" y1="614" x2="440" y2="614" stroke="#eef2f7"/>
+<text x="68" y="631" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="120" y="631" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">club</text>
+<text x="432" y="631" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">VARCHAR(80) NULL</text>
+<line x1="60" y1="640" x2="440" y2="640" stroke="#eef2f7"/>
+<text x="68" y="657" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="120" y="657" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">telefono</text>
+<text x="432" y="657" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">VARCHAR(20) NULL</text>
+<rect x="480" y="120" width="380" height="290" rx="6" fill="#ffffff" stroke="#82b366" stroke-width="1.5"/>
+<rect x="480" y="120" width="380" height="30" rx="6" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="670" y="140" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#1b2633" text-anchor="middle">torneos</text>
+<text x="488" y="167" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start">PK</text>
+<text x="540" y="167" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" fill="#1b2633" text-anchor="start">id</text>
+<text x="852" y="167" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">INT UNSIGNED</text>
+<line x1="480" y1="176" x2="860" y2="176" stroke="#eef2f7"/>
+<text x="488" y="193" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="540" y="193" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">nombre</text>
+<text x="852" y="193" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">VARCHAR(120)</text>
+<line x1="480" y1="202" x2="860" y2="202" stroke="#eef2f7"/>
+<text x="488" y="219" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="540" y="219" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">descripcion</text>
+<text x="852" y="219" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">TEXT NULL</text>
+<line x1="480" y1="228" x2="860" y2="228" stroke="#eef2f7"/>
+<text x="488" y="245" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="540" y="245" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">sede</text>
+<text x="852" y="245" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">VARCHAR(120)</text>
+<line x1="480" y1="254" x2="860" y2="254" stroke="#eef2f7"/>
+<text x="488" y="271" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="540" y="271" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">fecha_inicio</text>
+<text x="852" y="271" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">DATE</text>
+<line x1="480" y1="280" x2="860" y2="280" stroke="#eef2f7"/>
+<text x="488" y="297" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="540" y="297" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">fecha_fin</text>
+<text x="852" y="297" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">DATE</text>
+<line x1="480" y1="306" x2="860" y2="306" stroke="#eef2f7"/>
+<text x="488" y="323" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="540" y="323" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">estado</text>
+<text x="852" y="323" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">ENUM('BORRADOR','ABIERTO','EN_CURSO','FINALIZADO')</text>
+<line x1="480" y1="332" x2="860" y2="332" stroke="#eef2f7"/>
+<text x="488" y="349" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start">FK</text>
+<text x="540" y="349" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">creado_por</text>
+<text x="852" y="349" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">INT UNSIGNED</text>
+<line x1="480" y1="358" x2="860" y2="358" stroke="#eef2f7"/>
+<text x="488" y="375" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="540" y="375" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">creado_en</text>
+<text x="852" y="375" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">DATETIME</text>
+<line x1="480" y1="384" x2="860" y2="384" stroke="#eef2f7"/>
+<text x="488" y="401" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="540" y="401" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">actualizado_en</text>
+<text x="852" y="401" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">DATETIME</text>
+<rect x="480" y="480" width="380" height="186" rx="6" fill="#ffffff" stroke="#82b366" stroke-width="1.5"/>
+<rect x="480" y="480" width="380" height="30" rx="6" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="670" y="500" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#1b2633" text-anchor="middle">categorias</text>
+<text x="488" y="527" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start">PK</text>
+<text x="540" y="527" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" fill="#1b2633" text-anchor="start">id</text>
+<text x="852" y="527" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">INT UNSIGNED</text>
+<line x1="480" y1="536" x2="860" y2="536" stroke="#eef2f7"/>
+<text x="488" y="553" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start">FK</text>
+<text x="540" y="553" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">torneo_id</text>
+<text x="852" y="553" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">INT UNSIGNED</text>
+<line x1="480" y1="562" x2="860" y2="562" stroke="#eef2f7"/>
+<text x="488" y="579" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="540" y="579" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">nombre</text>
+<text x="852" y="579" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">VARCHAR(60)</text>
+<line x1="480" y1="588" x2="860" y2="588" stroke="#eef2f7"/>
+<text x="488" y="605" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="540" y="605" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">sexo</text>
+<text x="852" y="605" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">ENUM('M','F','MIXTO')</text>
+<line x1="480" y1="614" x2="860" y2="614" stroke="#eef2f7"/>
+<text x="488" y="631" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="540" y="631" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">edad_min</text>
+<text x="852" y="631" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">TINYINT UNSIGNED</text>
+<line x1="480" y1="640" x2="860" y2="640" stroke="#eef2f7"/>
+<text x="488" y="657" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="540" y="657" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">edad_max</text>
+<text x="852" y="657" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">TINYINT UNSIGNED</text>
+<rect x="920" y="120" width="380" height="108" rx="6" fill="#ffffff" stroke="#d6b656" stroke-width="1.5"/>
+<rect x="920" y="120" width="380" height="30" rx="6" fill="#fff2cc" stroke="#d6b656" stroke-width="1.5"/>
+<text x="1110" y="140" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#1b2633" text-anchor="middle">deportes</text>
+<text x="928" y="167" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start">PK</text>
+<text x="980" y="167" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" fill="#1b2633" text-anchor="start">id</text>
+<text x="1292" y="167" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">INT UNSIGNED</text>
+<line x1="920" y1="176" x2="1300" y2="176" stroke="#eef2f7"/>
+<text x="928" y="193" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start">UQ</text>
+<text x="980" y="193" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">nombre</text>
+<text x="1292" y="193" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">VARCHAR(40)</text>
+<line x1="920" y1="202" x2="1300" y2="202" stroke="#eef2f7"/>
+<text x="928" y="219" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="980" y="219" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">descripcion</text>
+<text x="1292" y="219" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">VARCHAR(255) NULL</text>
+<rect x="920" y="310" width="380" height="238" rx="6" fill="#ffffff" stroke="#82b366" stroke-width="1.5"/>
+<rect x="920" y="310" width="380" height="30" rx="6" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="1110" y="330" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#1b2633" text-anchor="middle">pruebas</text>
+<text x="928" y="357" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start">PK</text>
+<text x="980" y="357" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" fill="#1b2633" text-anchor="start">id</text>
+<text x="1292" y="357" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">INT UNSIGNED</text>
+<line x1="920" y1="366" x2="1300" y2="366" stroke="#eef2f7"/>
+<text x="928" y="383" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start">FK</text>
+<text x="980" y="383" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">torneo_id</text>
+<text x="1292" y="383" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">INT UNSIGNED</text>
+<line x1="920" y1="392" x2="1300" y2="392" stroke="#eef2f7"/>
+<text x="928" y="409" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start">FK</text>
+<text x="980" y="409" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">deporte_id</text>
+<text x="1292" y="409" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">INT UNSIGNED</text>
+<line x1="920" y1="418" x2="1300" y2="418" stroke="#eef2f7"/>
+<text x="928" y="435" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="980" y="435" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">nombre</text>
+<text x="1292" y="435" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">VARCHAR(120)</text>
+<line x1="920" y1="444" x2="1300" y2="444" stroke="#eef2f7"/>
+<text x="928" y="461" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="980" y="461" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">distancia_m</text>
+<text x="1292" y="461" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">INT UNSIGNED</text>
+<line x1="920" y1="470" x2="1300" y2="470" stroke="#eef2f7"/>
+<text x="928" y="487" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="980" y="487" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">fecha_hora</text>
+<text x="1292" y="487" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">DATETIME</text>
+<line x1="920" y1="496" x2="1300" y2="496" stroke="#eef2f7"/>
+<text x="928" y="513" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="980" y="513" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">cupo</text>
+<text x="1292" y="513" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">SMALLINT UNSIGNED NULL</text>
+<line x1="920" y1="522" x2="1300" y2="522" stroke="#eef2f7"/>
+<text x="928" y="539" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="980" y="539" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">estado</text>
+<text x="1292" y="539" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">ENUM('PROGRAMADA','EN_CURSO','FINALIZADA','CANCELADA')</text>
+<rect x="1360" y="120" width="380" height="212" rx="6" fill="#ffffff" stroke="#b85450" stroke-width="1.5"/>
+<rect x="1360" y="120" width="380" height="30" rx="6" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="1550" y="140" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#1b2633" text-anchor="middle">inscripciones</text>
+<text x="1368" y="167" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start">PK</text>
+<text x="1420" y="167" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" fill="#1b2633" text-anchor="start">id</text>
+<text x="1732" y="167" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">INT UNSIGNED</text>
+<line x1="1360" y1="176" x2="1740" y2="176" stroke="#eef2f7"/>
+<text x="1368" y="193" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start">FK</text>
+<text x="1420" y="193" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">prueba_id</text>
+<text x="1732" y="193" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">INT UNSIGNED</text>
+<line x1="1360" y1="202" x2="1740" y2="202" stroke="#eef2f7"/>
+<text x="1368" y="219" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start">FK</text>
+<text x="1420" y="219" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">atleta_id</text>
+<text x="1732" y="219" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">INT UNSIGNED</text>
+<line x1="1360" y1="228" x2="1740" y2="228" stroke="#eef2f7"/>
+<text x="1368" y="245" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start">FK</text>
+<text x="1420" y="245" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">categoria_id</text>
+<text x="1732" y="245" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">INT UNSIGNED</text>
+<line x1="1360" y1="254" x2="1740" y2="254" stroke="#eef2f7"/>
+<text x="1368" y="271" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="1420" y="271" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">dorsal</text>
+<text x="1732" y="271" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">SMALLINT UNSIGNED</text>
+<line x1="1360" y1="280" x2="1740" y2="280" stroke="#eef2f7"/>
+<text x="1368" y="297" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="1420" y="297" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">estado</text>
+<text x="1732" y="297" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">ENUM('PENDIENTE','CONFIRMADA','ANULADA')</text>
+<line x1="1360" y1="306" x2="1740" y2="306" stroke="#eef2f7"/>
+<text x="1368" y="323" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="1420" y="323" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">creado_en</text>
+<text x="1732" y="323" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">DATETIME</text>
+<rect x="1360" y="410" width="380" height="212" rx="6" fill="#ffffff" stroke="#b85450" stroke-width="1.5"/>
+<rect x="1360" y="410" width="380" height="30" rx="6" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="1550" y="430" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#1b2633" text-anchor="middle">resultados</text>
+<text x="1368" y="457" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start">PK</text>
+<text x="1420" y="457" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" fill="#1b2633" text-anchor="start">id</text>
+<text x="1732" y="457" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">INT UNSIGNED</text>
+<line x1="1360" y1="466" x2="1740" y2="466" stroke="#eef2f7"/>
+<text x="1368" y="483" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start">FK,UQ</text>
+<text x="1420" y="483" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">inscripcion_id</text>
+<text x="1732" y="483" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">INT UNSIGNED</text>
+<line x1="1360" y1="492" x2="1740" y2="492" stroke="#eef2f7"/>
+<text x="1368" y="509" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="1420" y="509" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">tiempo_ms</text>
+<text x="1732" y="509" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">INT UNSIGNED NULL</text>
+<line x1="1360" y1="518" x2="1740" y2="518" stroke="#eef2f7"/>
+<text x="1368" y="535" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="1420" y="535" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">estado</text>
+<text x="1732" y="535" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">ENUM('FINALIZADO','DNF','DNS','DSQ')</text>
+<line x1="1360" y1="544" x2="1740" y2="544" stroke="#eef2f7"/>
+<text x="1368" y="561" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start">FK</text>
+<text x="1420" y="561" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">registrado_por</text>
+<text x="1732" y="561" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">INT UNSIGNED</text>
+<line x1="1360" y1="570" x2="1740" y2="570" stroke="#eef2f7"/>
+<text x="1368" y="587" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="1420" y="587" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">registrado_en</text>
+<text x="1732" y="587" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">DATETIME</text>
+<line x1="1360" y1="596" x2="1740" y2="596" stroke="#eef2f7"/>
+<text x="1368" y="613" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#5b6878" text-anchor="start"></text>
+<text x="1420" y="613" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" fill="#1b2633" text-anchor="start">observaciones</text>
+<text x="1732" y="613" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#6b7685" text-anchor="end">VARCHAR(255) NULL</text>
+<text x="20" y="720" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="400" fill="#3b4a5c" text-anchor="start">Leyenda: PK = clave primaria · FK = clave foránea · UQ = valor único · 1 / N / 0..1 = cardinalidad</text>
+<text x="20" y="742" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="400" fill="#3b4a5c" text-anchor="start">La posición en la clasificación se calcula en la vista vw_clasificacion (RANK por prueba y categoría).</text>
+</svg>

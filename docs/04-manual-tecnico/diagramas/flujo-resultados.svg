@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="996" viewBox="0 0 920 996">
+<defs><marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5b6878"/></marker></defs>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="40" y="40" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800" text-anchor="start" fill="#1b2633">Flujo de resultados en vivo (Sprint 3)</text>
+<path d="M460 152 L460 208" fill="none" stroke="#5b6878" stroke-width="1.5" marker-end="url(#flecha)"/>
+<path d="M460 268 L460 320" fill="none" stroke="#5b6878" stroke-width="1.5" marker-end="url(#flecha)"/>
+<path d="M460 380 L460 432" fill="none" stroke="#5b6878" stroke-width="1.5" marker-end="url(#flecha)"/>
+<path d="M460 492 L460 544" fill="none" stroke="#5b6878" stroke-width="1.5" marker-end="url(#flecha)"/>
+<path d="M460 604 L460 640" fill="none" stroke="#5b6878" stroke-width="1.5" marker-end="url(#flecha)"/>
+<path d="M560 686 L630 686" fill="none" stroke="#5b6878" stroke-width="1.5" marker-end="url(#flecha)"/>
+<rect x="583.6" y="666" width="22.8" height="16" rx="3" fill="#ffffff"/>
+<text x="595" y="678" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" text-anchor="middle" fill="#3b4a5c">Sí</text>
+<path d="M850 686 L872 686 L872 462 L570 462" fill="none" stroke="#5b6878" stroke-width="1.5" marker-end="url(#flecha)"/>
+<path d="M460 732 L460 752" fill="none" stroke="#5b6878" stroke-width="1.5" marker-end="url(#flecha)"/>
+<rect x="465" y="736" width="22.8" height="16" rx="3" fill="#ffffff"/>
+<text x="470" y="748" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" text-anchor="start" fill="#3b4a5c">No</text>
+<path d="M460 844 L460 884" fill="none" stroke="#5b6878" stroke-width="1.5" marker-end="url(#flecha)"/>
+<rect x="465" y="848" width="22.8" height="16" rx="3" fill="#ffffff"/>
+<text x="470" y="860" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" text-anchor="start" fill="#3b4a5c">Sí</text>
+<path d="M360 798 L336 798 L336 686 L360 686" fill="none" stroke="#5b6878" stroke-width="1.5" marker-end="url(#flecha)"/>
+<rect x="318.6" y="730" width="22.8" height="16" rx="3" fill="#ffffff"/>
+<text x="330" y="742" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" text-anchor="middle" fill="#3b4a5c">No</text>
+<rect x="370" y="100" width="180" height="52" rx="26" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="460" y="130" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" text-anchor="middle" fill="#1b2633">Inicio</text>
+<polygon points="366,208 570,208 554,268 350,268" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="460" y="234.5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" text-anchor="middle" fill="#1b2633">Público abre la prueba</text>
+<text x="460" y="249.5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" text-anchor="middle" fill="#1b2633">y elige categoría</text>
+<rect x="350" y="320" width="220" height="60" rx="8" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="460" y="346.5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" text-anchor="middle" fill="#1b2633">GET clasificación</text>
+<text x="460" y="361.5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" text-anchor="middle" fill="#1b2633">(vista vw_clasificacion)</text>
+<rect x="350" y="432" width="220" height="60" rx="8" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="460" y="458.5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" text-anchor="middle" fill="#1b2633">Mostrar tabla con</text>
+<text x="460" y="473.5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" text-anchor="middle" fill="#1b2633">podio y tiempos</text>
+<rect x="350" y="544" width="220" height="60" rx="8" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="460" y="570.5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" text-anchor="middle" fill="#1b2633">Suscribirse al canal</text>
+<text x="460" y="585.5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" text-anchor="middle" fill="#1b2633">de la prueba (Socket.IO)</text>
+<polygon points="460,640 560,686 460,732 360,686" fill="#fff2cc" stroke="#d6b656" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="460" y="682.5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" text-anchor="middle" fill="#1b2633">¿Llega un</text>
+<text x="460" y="697.5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" text-anchor="middle" fill="#1b2633">nuevo tiempo?</text>
+<rect x="630" y="656" width="220" height="60" rx="8" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="740" y="682.5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" text-anchor="middle" fill="#1b2633">Actualizar posiciones</text>
+<text x="740" y="697.5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" text-anchor="middle" fill="#1b2633">sin recargar</text>
+<polygon points="460,752 560,798 460,844 360,798" fill="#fff2cc" stroke="#d6b656" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="460" y="794.5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" text-anchor="middle" fill="#1b2633">¿Prueba</text>
+<text x="460" y="809.5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" text-anchor="middle" fill="#1b2633">finalizada?</text>
+<rect x="370" y="884" width="180" height="52" rx="26" fill="#f8cecc" stroke="#b85450" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="460" y="914" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" text-anchor="middle" fill="#1b2633">Fin</text>
+</svg>

@@ -267,7 +267,7 @@ components:
         nombre: { type: string, example: Valentina }
         apellido: { type: string, example: Rojas }
         email: { type: string, example: valentina@podio.local }
-        rol: { type: string, enum: [ADMIN, JUEZ, ATLETA] }
+        rol: { type: string, enum: [ADMIN, JUEZ, ATLETA], example: ATLETA }
         activo: { type: boolean, example: true }
         creadoEn: { type: string, example: '2026-09-10 18:12:00' }
         atleta:
@@ -276,7 +276,7 @@ components:
           properties:
             documento: { type: string, example: '30111222' }
             fechaNacimiento: { type: string, format: date, example: '2008-03-14' }
-            sexo: { type: string, enum: [M, F] }
+            sexo: { type: string, enum: [M, F], example: F }
             club: { type: string, nullable: true, example: Club Delfines }
             telefono: { type: string, nullable: true, example: '555-0104' }
 

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="448" viewBox="0 0 1220 448">
+<defs><marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5b6878"/></marker></defs>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="40" y="40" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800" text-anchor="start" fill="#1b2633">Arquitectura del sistema</text>
+<path d="M350 193.2 L490 193.2" fill="none" stroke="#5b6878" stroke-width="1.5" marker-end="url(#flecha)"/>
+<rect x="379.8" y="173.2" width="80.4" height="16" rx="3" fill="#ffffff"/>
+<text x="420" y="185.2" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" text-anchor="middle" fill="#3b4a5c">HTTP / JSON</text>
+<path d="M730 193.2 L870 193.2" fill="none" stroke="#5b6878" stroke-width="1.5" marker-end="url(#flecha)"/>
+<rect x="740.6" y="173.2" width="118.80000000000001" height="16" rx="3" fill="#ffffff"/>
+<text x="800" y="185.2" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" text-anchor="middle" fill="#3b4a5c">SQL parametrizado</text>
+<path d="M610 253.2 L610 331.20000000000005" fill="none" stroke="#5b6878" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#flecha)"/>
+<path d="M500 361.20000000000005 L230 361.20000000000005 L230 253.2" fill="none" stroke="#5b6878" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#flecha)"/>
+<rect x="312" y="341.20000000000005" width="106" height="16" rx="3" fill="#ffffff"/>
+<text x="365" y="353.20000000000005" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" text-anchor="middle" fill="#3b4a5c">eventos en vivo</text>
+<rect x="110" y="133.2" width="240" height="120" rx="8" fill="#dae8fc" stroke="#0b2545" stroke-width="1.5"/>
+<text x="122" y="155.2" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" text-anchor="start" fill="#1b2633">Navegador / celular</text>
+<text x="122" y="172.2" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11.5" font-weight="400" text-anchor="start" fill="#1b2633">React 19 + Vite (PWA)</text>
+<text x="122" y="189.2" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11.5" font-weight="400" text-anchor="start" fill="#1b2633">React Router · Context de sesión</text>
+<text x="122" y="206.2" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11.5" font-weight="400" text-anchor="start" fill="#1b2633">Service Worker + caché (Workbox)</text>
+<text x="122" y="223.2" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11.5" font-weight="400" text-anchor="start" fill="#1b2633">Token JWT en localStorage</text>
+<rect x="490" y="133.2" width="240" height="120" rx="8" fill="#dae8fc" stroke="#0b2545" stroke-width="1.5"/>
+<text x="502" y="155.2" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" text-anchor="start" fill="#1b2633">API REST — Node.js + Express 5</text>
+<text x="502" y="172.2" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11.5" font-weight="400" text-anchor="start" fill="#1b2633">Rutas /api/auth, /usuarios,</text>
+<text x="502" y="189.2" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11.5" font-weight="400" text-anchor="start" fill="#1b2633">/dashboard, /torneos</text>
+<text x="502" y="206.2" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11.5" font-weight="400" text-anchor="start" fill="#1b2633">Middleware JWT y roles · validación</text>
+<text x="502" y="223.2" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11.5" font-weight="400" text-anchor="start" fill="#1b2633">Swagger UI en /api/docs</text>
+<rect x="870" y="133.2" width="240" height="120" rx="8" fill="#dae8fc" stroke="#0b2545" stroke-width="1.5"/>
+<text x="882" y="155.2" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" text-anchor="start" fill="#1b2633">Base de datos</text>
+<text x="882" y="172.2" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11.5" font-weight="400" text-anchor="start" fill="#1b2633">MySQL 8 / MariaDB 11.8</text>
+<text x="882" y="189.2" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11.5" font-weight="400" text-anchor="start" fill="#1b2633">8 tablas + vw_clasificacion</text>
+<text x="882" y="206.2" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11.5" font-weight="400" text-anchor="start" fill="#1b2633">Pool mysql2 · transacciones</text>
+<text x="882" y="223.2" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11.5" font-weight="400" text-anchor="start" fill="#1b2633">Scripts schema.sql y seed.sql</text>
+<rect x="500" y="331.20000000000005" width="220" height="60" rx="8" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="610" y="357.70000000000005" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" text-anchor="middle" fill="#1b2633">Socket.IO</text>
+<text x="610" y="372.70000000000005" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" text-anchor="middle" fill="#1b2633">(resultados en vivo, Sprint 3)</text>
+<rect x="880" y="331.20000000000005" width="220" height="60" rx="8" fill="#f5f5f5" stroke="#999999" stroke-width="1.5"/>
+<text x="990" y="357.70000000000005" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" text-anchor="middle" fill="#1b2633">Vite (puerto 5173) envía</text>
+<text x="990" y="372.70000000000005" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="500" text-anchor="middle" fill="#1b2633">/api al servidor (puerto 3000)</text>
+</svg>
