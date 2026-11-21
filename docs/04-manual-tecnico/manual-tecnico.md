@@ -309,7 +309,7 @@ npm test
 | Proyecto | Archivos | Pruebas | Qué cubren |
 |---|---|---|---|
 | `server` | 6 | 50 | Health check, manejo de errores, registro (duplicados, transacción, rol forzado), login, tokens inválidos o vencidos, permisos por rol, paginación, dashboard, OpenAPI |
-| `client` | 7 | 41 | Cliente HTTP (errores, sin conexión, proxy 502/503, 401), sesión (conserva el token si el servidor cae), rutas protegidas, login, registro, página de inicio (carga, vacío, error), dashboard y creación de usuarios |
+| `client` | 8 | 45 | Cliente HTTP (errores, sin conexión, proxy 502/503, 401), sesión (conserva el token si el servidor cae), rutas protegidas, desplazamiento a secciones del menú, login, registro, página de inicio (carga, vacío, error), dashboard y creación de usuarios |
 
 Las pruebas de la API usan una base aparte (`torneos_test`) que se recrea automáticamente antes de cada ejecución.
 
