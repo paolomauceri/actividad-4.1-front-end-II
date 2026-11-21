@@ -52,6 +52,10 @@ export async function apiFetch(path, { method = 'GET', body, auth = true, signal
 
   if (!res.ok) {
     const error = data?.error;
+    // 502/503/504 sin cuerpo de la API: responde un proxy porque la API no está disponible
+    if (!error && [502, 503, 504].includes(res.status)) {
+      throw new ApiError(0, 'NETWORK_ERROR', MENSAJE_SIN_CONEXION);
+    }
     // La sesión guardada ya no sirve: se cierra en toda la app
     if (res.status === 401 && token) {
       clearToken();

@@ -15,10 +15,10 @@ export function AuthProvider({ children }) {
     const controller = new AbortController();
     apiFetch('/api/auth/me', { signal: controller.signal })
       .then((data) => setUsuario(data.usuario))
-      .catch((err) => {
-        if (err?.name === 'AbortError') return;
-        // Sin conexión: se conserva el token para reintentar más tarde
-        if (err?.code !== 'NETWORK_ERROR') clearToken();
+      .catch(() => {
+        // Si el token es inválido o expiró (401), apiFetch ya lo borró.
+        // Ante otros errores (servidor o base de datos caídos) se conserva
+        // para no cerrar la sesión por una falla temporal.
       })
       .finally(() => {
         if (!controller.signal.aborted) setCargando(false);

@@ -50,7 +50,7 @@ const DESARROLLO = `
 | Dashboard administrativo | Completo: indicadores, próximas pruebas, gráfico por deporte, usuarios recientes y creación de jueces | Capturas 07 a 10 |
 | Endpoints en OpenAPI para autenticación y registro de usuarios | Completo: 8 endpoints documentados y probables en Swagger UI | Manual técnico §7 y capturas 11 y 12 |
 | Aplicación web progresiva (PWA) | Manifest, íconos, service worker y caché sin conexión | Manual técnico §9 |
-| Pruebas automáticas | 82 pruebas (50 de la API y 32 del frontend) | Manual técnico §12 |
+| Pruebas automáticas | 91 pruebas (50 de la API y 41 del frontend) | Manual técnico §12 |
 
 ## Endpoints de autenticación y registro (OpenAPI)
 

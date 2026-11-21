@@ -91,13 +91,30 @@ describe('apiFetch', () => {
     expect(error.message).toBe('No se pudo conectar con el servidor. Intenta de nuevo.');
   });
 
+  it.each([502, 503, 504])('trata un %i sin cuerpo JSON (proxy sin API) como NETWORK_ERROR', async (status) => {
+    fetch.mockReturnValue(Promise.resolve(new Response('', { status })));
+
+    const error = await apiFetch('/api/health').catch((e) => e);
+
+    expect(error.code).toBe('NETWORK_ERROR');
+    expect(error.message).toBe('No se pudo conectar con el servidor. Intenta de nuevo.');
+  });
+
+  it('respeta el código del servidor en un 503 con cuerpo JSON (DB_UNAVAILABLE)', async () => {
+    fetch.mockReturnValue(respuesta(503, { error: { code: 'DB_UNAVAILABLE', message: 'La base de datos no está disponible.' } }));
+
+    const error = await apiFetch('/api/health').catch((e) => e);
+
+    expect(error.code).toBe('DB_UNAVAILABLE');
+  });
+
   it('lanza un error genérico si el servidor responde algo que no es JSON', async () => {
-    fetch.mockReturnValue(Promise.resolve(new Response('<html>Bad Gateway</html>', { status: 502 })));
+    fetch.mockReturnValue(Promise.resolve(new Response('<html>Internal Server Error</html>', { status: 500 })));
 
     const error = await apiFetch('/api/health').catch((e) => e);
 
     expect(error).toBeInstanceOf(ApiError);
-    expect(error.status).toBe(502);
-    expect(error.code).toBe('HTTP_502');
+    expect(error.status).toBe(500);
+    expect(error.code).toBe('HTTP_500');
   });
 });
