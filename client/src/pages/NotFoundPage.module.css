@@ -1,0 +1,21 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-block: var(--space-20);
+  text-align: center;
+}
+
+.code {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 6rem;
+  line-height: 1;
+  color: var(--color-primary);
+}
+
+.text {
+  max-width: 42ch;
+  color: var(--color-text-muted);
+}

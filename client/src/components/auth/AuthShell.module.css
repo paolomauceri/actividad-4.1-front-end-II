@@ -1,0 +1,105 @@
+.shell {
+  display: grid;
+  gap: var(--space-8);
+  padding-block: var(--space-8) var(--space-12);
+}
+
+.panel {
+  display: none;
+}
+
+.card {
+  width: 100%;
+  max-width: 560px;
+  margin-inline: auto;
+  padding: var(--space-6);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.titulo {
+  font-size: var(--text-3xl);
+  margin-bottom: var(--space-2);
+}
+
+.subtitulo {
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-6);
+}
+
+.pie {
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 960px) {
+  .shell {
+    grid-template-columns: 5fr 6fr;
+    align-items: start;
+    padding-block: var(--space-12) var(--space-16);
+  }
+
+  .panel {
+    position: sticky;
+    top: calc(var(--header-h) + var(--space-8));
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    padding: var(--space-10);
+    border-radius: var(--radius-lg);
+    color: #ffffff;
+    background:
+      repeating-linear-gradient(90deg, transparent 0 78px, rgba(255, 255, 255, 0.06) 78px 80px),
+      linear-gradient(160deg, #0b2545 0%, #0e3a5c 60%, #0c6b80 100%);
+  }
+
+  .card {
+    margin: 0;
+    padding: var(--space-8);
+  }
+}
+
+.eyebrow {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-lg);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #7fe0ee;
+}
+
+.claim {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-3xl);
+  line-height: 1.05;
+}
+
+.beneficios {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: #d6e2f2;
+}
+
+.beneficios li {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+
+.icono {
+  flex-shrink: 0;
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+  color: #fdba74;
+}

@@ -1,0 +1,168 @@
+.section {
+  padding-block: var(--space-12) var(--space-8);
+  scroll-margin-top: var(--header-h);
+}
+
+.head {
+  margin-bottom: var(--space-8);
+}
+
+.sub {
+  color: var(--color-text-muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: var(--space-5);
+}
+
+.card {
+  display: flex;
+  gap: var(--space-5);
+  min-height: 200px;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 72px;
+  height: 80px;
+  border-radius: var(--radius-md);
+  background: var(--color-brand);
+  color: #ffffff;
+}
+
+.day {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.month {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #7fe0ee;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.badge {
+  padding: 2px var(--space-3);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-xs);
+  font-weight: 700;
+}
+
+.abierto {
+  background: var(--color-success-soft);
+  color: var(--color-success);
+}
+
+.curso {
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+.fin {
+  background: var(--color-surface-2);
+  color: var(--color-text-muted);
+}
+
+.name {
+  margin: 0;
+  font-size: var(--text-xl);
+}
+
+.meta {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.meta li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.meta svg {
+  flex-shrink: 0;
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  padding: 2px var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* En pantallas angostas el botón ocupa todo el ancho y su texto puede saltar de línea */
+.body .cta {
+  max-width: 100%;
+  margin-top: var(--space-1);
+  padding-block: var(--space-2);
+  white-space: normal;
+  text-align: center;
+  line-height: 1.25;
+}
+
+@media (max-width: 559px) {
+  .body .cta {
+    width: 100%;
+  }
+}
+
+.empty {
+  padding: var(--space-8);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--color-surface-2) 25%, var(--color-surface) 50%, var(--color-surface-2) 75%);
+  background-size: 200% 100%;
+  animation: brillo 1.2s ease-in-out infinite;
+}
+
+@keyframes brillo {
+  to {
+    background-position: -200% 0;
+  }
+}

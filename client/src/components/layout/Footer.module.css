@@ -1,0 +1,32 @@
+.footer {
+  margin-top: var(--space-16);
+  padding: var(--space-10) 0 var(--space-8);
+  background: var(--color-brand);
+  color: #d6e2f2;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-width: 520px;
+}
+
+.tagline {
+  margin: 0;
+  color: #c3d3e8;
+}
+
+.meta {
+  margin: 0;
+  padding-top: var(--space-4);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: var(--text-sm);
+  color: #b3c4db;
+}
