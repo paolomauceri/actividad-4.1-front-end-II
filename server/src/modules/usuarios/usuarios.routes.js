@@ -4,21 +4,16 @@ import { withTransaction } from '../../db/pool.js';
 import { requireAuth, requireRole } from '../../middleware/auth.js';
 import { validate } from '../../middleware/validate.js';
 import { HttpError } from '../../utils/http-error.js';
+import { enteroEnRango, idDeRuta } from '../../utils/params.js';
 import { reglaEmail, reglaNombre, reglaPassword } from '../auth/auth.validators.js';
 import { hashPassword } from '../auth/auth.service.js';
-import { findPublicoById, insertUsuario, listUsuarios, mapDuplicateError } from './usuarios.repository.js';
+import { findPublicoById, insertUsuario, listUsuarios, mapDuplicateError, updateActivo } from './usuarios.repository.js';
 
 export const usuariosRouter = Router();
 
 const ROLES = ['ADMIN', 'JUEZ', 'ATLETA'];
 
 usuariosRouter.use(requireAuth, requireRole('ADMIN'));
-
-function enteroEnRango(valor, porDefecto, min, max) {
-  const n = Number.parseInt(valor, 10);
-  if (Number.isNaN(n)) return porDefecto;
-  return Math.min(Math.max(n, min), max);
-}
 
 // GET /api/usuarios?page=1&limit=20&rol=JUEZ
 usuariosRouter.get('/', async (req, res) => {
@@ -57,3 +52,19 @@ usuariosRouter.post('/', validate(crearUsuarioRules), async (req, res) => {
 
   res.status(201).json({ usuario: await findPublicoById(id) });
 });
+
+// PATCH /api/usuarios/:id/activo — activa o desactiva una cuenta (una cuenta desactivada no puede iniciar sesión)
+usuariosRouter.patch(
+  '/:id/activo',
+  validate([body('activo').isBoolean({ strict: true }).withMessage('Debe ser true o false').toBoolean()]),
+  async (req, res) => {
+    const id = idDeRuta(req.params.id, 'El usuario no existe');
+    if (id === req.user.id) {
+      throw new HttpError(403, 'FORBIDDEN', 'No puedes desactivar tu propia cuenta.');
+    }
+    if (!(await findPublicoById(id))) throw new HttpError(404, 'NOT_FOUND', 'El usuario no existe');
+
+    await updateActivo(id, matchedData(req, { locations: ['body'] }).activo);
+    res.json({ usuario: await findPublicoById(id) });
+  },
+);

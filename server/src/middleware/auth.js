@@ -25,6 +25,24 @@ export async function requireAuth(req, res, next) {
   next();
 }
 
+/**
+ * Igual que requireAuth pero sin exigir sesión: si llega un token válido de un
+ * usuario activo deja req.user; si no, continúa como visitante (req.user indefinido).
+ * Sirve para endpoints públicos que muestran más datos a un ADMIN.
+ */
+export async function optionalAuth(req, res, next) {
+  const [scheme, token] = (req.get('Authorization') ?? '').split(' ');
+  if (scheme !== 'Bearer' || !token) return next();
+  try {
+    const { sub } = verifyToken(token);
+    const usuario = await findEstadoById(sub);
+    if (usuario?.activo) req.user = { id: usuario.id, rol: usuario.rol };
+  } catch {
+    // token inválido o vencido: se atiende como visitante
+  }
+  next();
+}
+
 /** Permite el acceso solo a los roles indicados (usar después de requireAuth). */
 export function requireRole(...roles) {
   return (req, res, next) => {

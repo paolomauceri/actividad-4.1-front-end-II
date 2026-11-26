@@ -27,7 +27,17 @@ tags:
   - name: Dashboard
     description: Indicadores del panel de administración (solo ADMIN)
   - name: Torneos
-    description: Consultas públicas de torneos
+    description: Torneos, su estado y su detalle con pruebas y categorías
+  - name: Pruebas
+    description: Competencias de cada torneo
+  - name: Categorías
+    description: Grupos por edad y sexo de cada torneo
+  - name: Atletas
+    description: Consulta y alta de atletas (ADMIN) y perfil propio (ATLETA)
+  - name: Inscripciones
+    description: Inscripción en pruebas con categoría y dorsal automáticos
+  - name: Deportes
+    description: Catálogo de disciplinas
   - name: Sistema
     description: Estado del servicio
 
@@ -216,6 +226,505 @@ paths:
                 type: array
                 items: { $ref: '#/components/schemas/TorneoResumen' }
 
+  /api/torneos:
+    get:
+      tags: [Torneos]
+      summary: Lista de torneos (público; el ADMIN ve también los BORRADOR)
+      security: [{}, { bearerAuth: [] }]
+      parameters:
+        - { name: estado, in: query, schema: { type: string, enum: [BORRADOR, ABIERTO, EN_CURSO, FINALIZADO] } }
+        - { name: page, in: query, schema: { type: integer, minimum: 1, default: 1 } }
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 100, default: 20 } }
+      responses:
+        '200':
+          description: Página de torneos, del más reciente al más antiguo
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PaginatedTorneos' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+    post:
+      tags: [Torneos]
+      summary: Crear torneo (ADMIN)
+      description: El torneo nace en estado BORRADOR (no visible al público).
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/TorneoRequest' }
+      responses:
+        '201':
+          description: Torneo creado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  torneo: { $ref: '#/components/schemas/Torneo' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /api/torneos/{id}:
+    parameters:
+      - { name: id, in: path, required: true, schema: { type: integer } }
+    get:
+      tags: [Torneos]
+      summary: Detalle del torneo con sus pruebas y categorías
+      security: [{}, { bearerAuth: [] }]
+      responses:
+        '200':
+          description: Torneo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  torneo: { $ref: '#/components/schemas/TorneoDetalle' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    put:
+      tags: [Torneos]
+      summary: Editar torneo (ADMIN)
+      description: No se puede cambiar `fechaInicio` si ya hay inscritos (409 `TIENE_INSCRIPCIONES`).
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/TorneoRequest' }
+      responses:
+        '200':
+          description: Torneo actualizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  torneo: { $ref: '#/components/schemas/Torneo' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+    delete:
+      tags: [Torneos]
+      summary: Eliminar torneo sin inscripciones (ADMIN)
+      security: [{ bearerAuth: [] }]
+      responses:
+        '204': { description: Eliminado }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /api/torneos/{id}/estado:
+    patch:
+      tags: [Torneos]
+      summary: Cambiar estado del torneo (ADMIN)
+      description: Avanza o retrocede de a un paso en BORRADOR → ABIERTO → EN_CURSO → FINALIZADO. Un salto responde 409 `TRANSICION_INVALIDA`.
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [estado]
+              properties:
+                estado: { type: string, enum: [BORRADOR, ABIERTO, EN_CURSO, FINALIZADO], example: ABIERTO }
+      responses:
+        '200':
+          description: Estado actualizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  torneo: { $ref: '#/components/schemas/Torneo' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /api/torneos/{torneoId}/pruebas:
+    parameters:
+      - { name: torneoId, in: path, required: true, schema: { type: integer } }
+    get:
+      tags: [Pruebas]
+      summary: Pruebas del torneo (público si el torneo está publicado)
+      security: [{}, { bearerAuth: [] }]
+      responses:
+        '200':
+          description: Pruebas ordenadas por fecha y hora
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: '#/components/schemas/Prueba' } }
+        '404': { $ref: '#/components/responses/NotFound' }
+    post:
+      tags: [Pruebas]
+      summary: Agregar prueba al torneo (ADMIN)
+      description: La fecha y hora debe caer entre `fechaInicio` y `fechaFin` del torneo.
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/PruebaRequest' }
+      responses:
+        '201':
+          description: Prueba creada
+          content:
+            application/json:
+              schema: { type: object, properties: { prueba: { $ref: '#/components/schemas/Prueba' } } }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /api/pruebas/{id}:
+    parameters:
+      - { name: id, in: path, required: true, schema: { type: integer } }
+    put:
+      tags: [Pruebas]
+      summary: Editar prueba (ADMIN)
+      description: El cupo no puede quedar por debajo de los inscritos (409 `CUPO_LLENO`).
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/PruebaRequest' }
+      responses:
+        '200':
+          description: Prueba actualizada
+          content:
+            application/json:
+              schema: { type: object, properties: { prueba: { $ref: '#/components/schemas/Prueba' } } }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+    delete:
+      tags: [Pruebas]
+      summary: Eliminar prueba sin inscripciones (ADMIN)
+      security: [{ bearerAuth: [] }]
+      responses:
+        '204': { description: Eliminada }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /api/pruebas/{id}/estado:
+    patch:
+      tags: [Pruebas]
+      summary: Cambiar estado de la prueba (ADMIN)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [estado]
+              properties:
+                estado: { type: string, enum: [PROGRAMADA, EN_CURSO, FINALIZADA, CANCELADA] }
+      responses:
+        '200':
+          description: Estado actualizado
+          content:
+            application/json:
+              schema: { type: object, properties: { prueba: { $ref: '#/components/schemas/Prueba' } } }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /api/torneos/{torneoId}/categorias:
+    parameters:
+      - { name: torneoId, in: path, required: true, schema: { type: integer } }
+    get:
+      tags: [Categorías]
+      summary: Categorías del torneo (público si el torneo está publicado)
+      security: [{}, { bearerAuth: [] }]
+      responses:
+        '200':
+          description: Categorías de menor a mayor edad
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: '#/components/schemas/Categoria' } }
+        '404': { $ref: '#/components/responses/NotFound' }
+    post:
+      tags: [Categorías]
+      summary: Crear categoría (ADMIN)
+      description: |
+        Dos categorías del mismo torneo no pueden compartir edades si su sexo coincide o una es MIXTO
+        (409 `CATEGORIA_SOLAPADA`). El nombre es único por torneo (409 `CATEGORIA_DUPLICADA`).
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CategoriaRequest' }
+      responses:
+        '201':
+          description: Categoría creada
+          content:
+            application/json:
+              schema: { type: object, properties: { categoria: { $ref: '#/components/schemas/Categoria' } } }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /api/categorias/{id}:
+    parameters:
+      - { name: id, in: path, required: true, schema: { type: integer } }
+    put:
+      tags: [Categorías]
+      summary: Editar categoría (ADMIN)
+      description: Si tiene inscritos solo se puede cambiar el nombre (409 `TIENE_INSCRIPCIONES`).
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CategoriaRequest' }
+      responses:
+        '200':
+          description: Categoría actualizada
+          content:
+            application/json:
+              schema: { type: object, properties: { categoria: { $ref: '#/components/schemas/Categoria' } } }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+    delete:
+      tags: [Categorías]
+      summary: Eliminar categoría sin inscritos (ADMIN)
+      security: [{ bearerAuth: [] }]
+      responses:
+        '204': { description: Eliminada }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /api/usuarios/{id}/activo:
+    patch:
+      tags: [Usuarios]
+      summary: Activar o desactivar una cuenta (ADMIN)
+      description: Una cuenta desactivada no puede iniciar sesión y su token deja de servir. El ADMIN no puede desactivarse a sí mismo (403).
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [activo]
+              properties:
+                activo: { type: boolean, example: false }
+      responses:
+        '200':
+          description: Usuario actualizado
+          content:
+            application/json:
+              schema: { type: object, properties: { usuario: { $ref: '#/components/schemas/UsuarioPublico' } } }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /api/atletas:
+    get:
+      tags: [Atletas]
+      summary: Buscar atletas (ADMIN)
+      description: Busca por nombre, apellido, documento o club.
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: q, in: query, schema: { type: string, maxLength: 80 }, example: Delfines }
+        - { name: page, in: query, schema: { type: integer, minimum: 1, default: 1 } }
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 100, default: 20 } }
+      responses:
+        '200':
+          description: Página de atletas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  datos: { type: array, items: { $ref: '#/components/schemas/Atleta' } }
+                  total: { type: integer }
+                  page: { type: integer }
+                  limit: { type: integer }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+    post:
+      tags: [Atletas]
+      summary: Registrar un atleta (ADMIN)
+      description: Mismas reglas que `POST /api/auth/register`, pero no devuelve token.
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/RegisterRequest' }
+      responses:
+        '201':
+          description: Atleta creado
+          content:
+            application/json:
+              schema: { type: object, properties: { atleta: { $ref: '#/components/schemas/Atleta' } } }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /api/atletas/me:
+    get:
+      tags: [Atletas]
+      summary: Mi perfil de atleta (ATLETA)
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Perfil
+          content:
+            application/json:
+              schema: { type: object, properties: { atleta: { $ref: '#/components/schemas/Atleta' } } }
+        '403': { $ref: '#/components/responses/Forbidden' }
+    put:
+      tags: [Atletas]
+      summary: Editar mi perfil (ATLETA)
+      description: Solo nombre, apellido, club y teléfono. Documento, fecha de nacimiento y sexo no se cambian (definen la categoría).
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [nombre, apellido]
+              properties:
+                nombre: { type: string, example: Valentina }
+                apellido: { type: string, example: Rojas }
+                club: { type: string, nullable: true, example: Club Delfines }
+                telefono: { type: string, nullable: true, example: '555-0104' }
+      responses:
+        '200':
+          description: Perfil actualizado
+          content:
+            application/json:
+              schema: { type: object, properties: { atleta: { $ref: '#/components/schemas/Atleta' } } }
+        '400': { $ref: '#/components/responses/ValidationError' }
+
+  /api/atletas/{id}:
+    get:
+      tags: [Atletas]
+      summary: Ficha del atleta con sus inscripciones y resultados (ADMIN)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+      responses:
+        '200':
+          description: Atleta
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  atleta: { $ref: '#/components/schemas/Atleta' }
+                  inscripciones: { type: array, items: { $ref: '#/components/schemas/Inscripcion' } }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /api/inscripciones:
+    get:
+      tags: [Inscripciones]
+      summary: Inscritos de una prueba o torneo (ADMIN, JUEZ)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: pruebaId, in: query, schema: { type: integer } }
+        - { name: torneoId, in: query, schema: { type: integer } }
+        - { name: incluirAnuladas, in: query, schema: { type: string, enum: ['1', 'true'] } }
+      responses:
+        '200':
+          description: Inscripciones ordenadas por dorsal
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: '#/components/schemas/Inscripcion' } }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+    post:
+      tags: [Inscripciones]
+      summary: Inscribir en una prueba (ATLETA a sí mismo, ADMIN a cualquiera)
+      description: |
+        La categoría se asigna sola según la edad del atleta a la fecha de inicio del torneo y su sexo
+        (prefiere la de su sexo antes que una MIXTO). El dorsal es el siguiente libre de la prueba.
+        Si el atleta había anulado su inscripción, se reactiva con el mismo dorsal.
+        Errores 409: `TORNEO_NO_ABIERTO`, `YA_INSCRITO`, `CUPO_LLENO`, `SIN_CATEGORIA`.
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [pruebaId]
+              properties:
+                pruebaId: { type: integer, example: 2 }
+                atletaId: { type: integer, description: Obligatorio para el ADMIN; ignorado para el ATLETA, example: 4 }
+      responses:
+        '201':
+          description: Inscripción creada o reactivada
+          content:
+            application/json:
+              schema: { type: object, properties: { inscripcion: { $ref: '#/components/schemas/Inscripcion' } } }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /api/inscripciones/mias:
+    get:
+      tags: [Inscripciones]
+      summary: Mis inscripciones (ATLETA)
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Inscripciones del atleta, incluidas las anuladas
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: '#/components/schemas/Inscripcion' } }
+
+  /api/inscripciones/{id}:
+    patch:
+      tags: [Inscripciones]
+      summary: Cambiar dorsal o estado
+      description: El ADMIN cambia dorsal y estado. El ATLETA solo puede anular su propia inscripción mientras el torneo está ABIERTO.
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dorsal: { type: integer, minimum: 1, example: 12 }
+                estado: { type: string, enum: [CONFIRMADA, ANULADA] }
+      responses:
+        '200':
+          description: Inscripción actualizada
+          content:
+            application/json:
+              schema: { type: object, properties: { inscripcion: { $ref: '#/components/schemas/Inscripcion' } } }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /api/deportes:
+    get:
+      tags: [Deportes]
+      summary: Catálogo de deportes (público)
+      responses:
+        '200':
+          description: Deportes ordenados por nombre
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Deporte' }
+
 components:
   securitySchemes:
     bearerAuth:
@@ -345,6 +854,140 @@ components:
           items: { type: string }
           example: [Acuatlón, Aguas abiertas]
 
+    TorneoRequest:
+      type: object
+      required: [nombre, sede, fechaInicio, fechaFin]
+      properties:
+        nombre: { type: string, minLength: 3, maxLength: 120, example: Copa de Verano 2027 }
+        descripcion: { type: string, maxLength: 2000, nullable: true }
+        sede: { type: string, minLength: 3, maxLength: 120, example: Club Náutico }
+        fechaInicio: { type: string, format: date, example: '2027-01-15' }
+        fechaFin: { type: string, format: date, example: '2027-01-16' }
+
+    Torneo:
+      type: object
+      properties:
+        id: { type: integer, example: 1 }
+        nombre: { type: string, example: Copa Aguas Abiertas Lago Azul 2026 }
+        descripcion: { type: string, nullable: true }
+        sede: { type: string, example: 'Lago Azul, Playa Norte' }
+        fechaInicio: { type: string, format: date }
+        fechaFin: { type: string, format: date }
+        estado: { type: string, enum: [BORRADOR, ABIERTO, EN_CURSO, FINALIZADO] }
+        totalPruebas: { type: integer, example: 3 }
+        totalInscritos: { type: integer, description: Inscripciones no anuladas, example: 10 }
+        deportes: { type: array, items: { type: string }, example: [Acuatlón, Aguas abiertas] }
+
+    TorneoDetalle:
+      allOf:
+        - $ref: '#/components/schemas/Torneo'
+        - type: object
+          properties:
+            pruebas: { type: array, items: { $ref: '#/components/schemas/Prueba' } }
+            categorias: { type: array, items: { $ref: '#/components/schemas/Categoria' } }
+
+    PaginatedTorneos:
+      type: object
+      properties:
+        datos: { type: array, items: { $ref: '#/components/schemas/Torneo' } }
+        total: { type: integer }
+        page: { type: integer }
+        limit: { type: integer }
+
+    Prueba:
+      type: object
+      properties:
+        id: { type: integer, example: 1 }
+        torneoId: { type: integer, example: 1 }
+        deporteId: { type: integer, example: 1 }
+        deporte: { type: string, example: Aguas abiertas }
+        nombre: { type: string, example: Aguas abiertas 1.500 m }
+        distanciaM: { type: integer, example: 1500 }
+        fechaHora: { type: string, example: '2026-12-12 08:00:00' }
+        cupo: { type: integer, nullable: true, example: 80 }
+        estado: { type: string, enum: [PROGRAMADA, EN_CURSO, FINALIZADA, CANCELADA] }
+        inscritos: { type: integer, example: 5 }
+
+    Categoria:
+      type: object
+      properties:
+        id: { type: integer, example: 1 }
+        torneoId: { type: integer, example: 1 }
+        nombre: { type: string, example: Juvenil Femenino }
+        sexo: { type: string, enum: [M, F, MIXTO] }
+        edadMin: { type: integer, example: 15 }
+        edadMax: { type: integer, example: 19 }
+        inscritos: { type: integer, example: 2 }
+
+    PruebaRequest:
+      type: object
+      required: [deporteId, nombre, distanciaM, fechaHora]
+      properties:
+        deporteId: { type: integer, example: 1 }
+        nombre: { type: string, minLength: 3, maxLength: 120, example: Aguas abiertas 3 km }
+        distanciaM: { type: integer, minimum: 1, example: 3000 }
+        fechaHora: { type: string, description: 'AAAA-MM-DDTHH:MM (hora local)', example: '2026-12-12T08:30' }
+        cupo: { type: integer, minimum: 1, maximum: 10000, nullable: true, example: 40 }
+
+    CategoriaRequest:
+      type: object
+      required: [nombre, sexo, edadMin, edadMax]
+      properties:
+        nombre: { type: string, minLength: 2, maxLength: 60, example: Juvenil Femenino }
+        sexo: { type: string, enum: [M, F, MIXTO] }
+        edadMin: { type: integer, minimum: 0, maximum: 120, example: 15 }
+        edadMax: { type: integer, minimum: 0, maximum: 120, example: 19 }
+
+    Atleta:
+      type: object
+      properties:
+        id: { type: integer, example: 4 }
+        nombre: { type: string, example: Valentina }
+        apellido: { type: string, example: Rojas }
+        email: { type: string, example: valentina@podio.local }
+        documento: { type: string, example: '30111222' }
+        fechaNacimiento: { type: string, format: date, example: '2008-03-14' }
+        sexo: { type: string, enum: [M, F] }
+        club: { type: string, nullable: true, example: Club Delfines }
+        telefono: { type: string, nullable: true }
+        activo: { type: boolean }
+
+    Inscripcion:
+      type: object
+      properties:
+        id: { type: integer, example: 37 }
+        pruebaId: { type: integer, example: 1 }
+        prueba: { type: string, example: Aguas abiertas 1.500 m }
+        pruebaFechaHora: { type: string, example: '2026-12-12 08:00:00' }
+        deporte: { type: string, example: Aguas abiertas }
+        torneoId: { type: integer, example: 1 }
+        torneo: { type: string, example: Copa Aguas Abiertas Lago Azul 2026 }
+        torneoEstado: { type: string, enum: [BORRADOR, ABIERTO, EN_CURSO, FINALIZADO] }
+        atletaId: { type: integer, example: 4 }
+        atleta: { type: string, example: Valentina Rojas }
+        documento: { type: string }
+        club: { type: string, nullable: true }
+        categoriaId: { type: integer, example: 1 }
+        categoria: { type: string, example: Juvenil Femenino }
+        dorsal: { type: integer, example: 11 }
+        estado: { type: string, enum: [PENDIENTE, CONFIRMADA, ANULADA] }
+        creadoEn: { type: string }
+        resultado:
+          type: object
+          nullable: true
+          properties:
+            estado: { type: string, enum: [FINALIZADO, DNF, DNS, DSQ] }
+            tiempoMs: { type: integer, nullable: true, example: 1325400 }
+            observaciones: { type: string, nullable: true }
+            registradoEn: { type: string }
+
+    Deporte:
+      type: object
+      properties:
+        id: { type: integer, example: 1 }
+        nombre: { type: string, example: Aguas abiertas }
+        descripcion: { type: string, nullable: true }
+
     Error:
       type: object
       properties:
@@ -382,6 +1025,19 @@ components:
           example: { error: { code: FORBIDDEN, message: No tienes permisos para realizar esta acción. } }
     DbUnavailable:
       description: La base de datos no responde (`DB_UNAVAILABLE`)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    NotFound:
+      description: El recurso no existe (`NOT_FOUND`)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    Conflict:
+      description: |
+        Regla de negocio incumplida (409). Códigos posibles: `TIENE_INSCRIPCIONES`, `TRANSICION_INVALIDA`,
+        `CATEGORIA_SOLAPADA`, `CATEGORIA_DUPLICADA`, `CUPO_LLENO`, `YA_INSCRITO`, `SIN_CATEGORIA`,
+        `DORSAL_TAKEN`, `TORNEO_NO_ABIERTO`, `RESULTADO_NO_PERMITIDO`.
       content:
         application/json:
           schema: { $ref: '#/components/schemas/Error' }

@@ -2,7 +2,7 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import request from 'supertest';
 import { createApp } from '../src/app.js';
 import { closePool } from '../src/db/pool.js';
-import { loginAs, ADMIN, ATLETA, JUEZ } from './helpers.js';
+import { loginAs, ADMIN, ATLETA, JUEZ, datosRegistro } from './helpers.js';
 
 const app = createApp();
 let adminToken;
@@ -134,5 +134,38 @@ describe('Documentación OpenAPI', () => {
     expect(Object.keys(res.body.paths)).toEqual(
       expect.arrayContaining(['/api/auth/register', '/api/auth/login', '/api/auth/me', '/api/usuarios']),
     );
+  });
+});
+
+describe('PATCH /api/usuarios/:id/activo', () => {
+  const auth = (token) => ({ Authorization: `Bearer ${token}` });
+
+  it('desactivar a un usuario corta su sesión y reactivarlo la devuelve', async () => {
+    const datos = datosRegistro();
+    const { body } = await request(app).post('/api/auth/register').send(datos);
+    const { id } = body.usuario;
+
+    const off = await request(app).patch(`/api/usuarios/${id}/activo`).set(auth(adminToken)).send({ activo: false });
+    expect(off.status).toBe(200);
+    expect(off.body.usuario).toMatchObject({ id, activo: false });
+    expect((await request(app).get('/api/auth/me').set(auth(body.token))).status).toBe(401);
+
+    const on = await request(app).patch(`/api/usuarios/${id}/activo`).set(auth(adminToken)).send({ activo: true });
+    expect(on.body.usuario.activo).toBe(true);
+    expect((await request(app).get('/api/auth/me').set(auth(body.token))).status).toBe(200);
+  });
+
+  it('el ADMIN no puede desactivarse a sí mismo', async () => {
+    const res = await request(app).patch('/api/usuarios/1/activo').set(auth(adminToken)).send({ activo: false });
+    expect(res.status).toBe(403);
+  });
+
+  it('valida el cuerpo y que el usuario exista', async () => {
+    expect((await request(app).patch('/api/usuarios/2/activo').set(auth(adminToken)).send({ activo: 'si' })).status).toBe(400);
+    expect((await request(app).patch('/api/usuarios/99999/activo').set(auth(adminToken)).send({ activo: false })).status).toBe(404);
+  });
+
+  it('solo el ADMIN', async () => {
+    expect((await request(app).patch('/api/usuarios/2/activo').set(auth(juezToken)).send({ activo: false })).status).toBe(403);
   });
 });

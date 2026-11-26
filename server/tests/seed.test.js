@@ -13,23 +13,23 @@ describe('datos de demostración (seed)', () => {
   it('dejan un torneo EN_CURSO que incluye el día de hoy', async () => {
     expect(
       await contar(
-        "SELECT COUNT(*) AS n FROM torneos WHERE estado = 'EN_CURSO' AND CURDATE() BETWEEN fecha_inicio AND fecha_fin",
+        "SELECT COUNT(*) AS n FROM torneos WHERE id <= 4 AND estado = 'EN_CURSO' AND CURDATE() BETWEEN fecha_inicio AND fecha_fin",
       ),
     ).toBe(1);
   });
 
   it('dejan una prueba EN_CURSO hoy para que el juez registre tiempos', async () => {
     expect(
-      await contar("SELECT COUNT(*) AS n FROM pruebas WHERE estado = 'EN_CURSO' AND DATE(fecha_hora) = CURDATE()"),
+      await contar("SELECT COUNT(*) AS n FROM pruebas WHERE id <= 10 AND estado = 'EN_CURSO' AND DATE(fecha_hora) = CURDATE()"),
     ).toBe(1);
   });
 
   it('mantienen el torneo ABIERTO en el futuro y el FINALIZADO en el pasado', async () => {
     expect(
-      await contar("SELECT COUNT(*) AS n FROM torneos WHERE estado = 'ABIERTO' AND fecha_inicio > CURDATE()"),
+      await contar("SELECT COUNT(*) AS n FROM torneos WHERE id <= 4 AND estado = 'ABIERTO' AND fecha_inicio > CURDATE()"),
     ).toBe(1);
     expect(
-      await contar("SELECT COUNT(*) AS n FROM torneos WHERE estado = 'FINALIZADO' AND fecha_fin < CURDATE()"),
+      await contar("SELECT COUNT(*) AS n FROM torneos WHERE id <= 4 AND estado = 'FINALIZADO' AND fecha_fin < CURDATE()"),
     ).toBe(1);
   });
 

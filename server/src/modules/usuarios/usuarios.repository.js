@@ -100,3 +100,7 @@ export async function listUsuarios({ page, limit, rol }) {
     total: Number(totalRows[0].total),
   };
 }
+
+export async function updateActivo(id, activo) {
+  await query('UPDATE usuarios SET activo = ? WHERE id = ?', [activo ? 1 : 0, id]);
+}
