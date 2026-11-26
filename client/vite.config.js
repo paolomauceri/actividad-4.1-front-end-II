@@ -29,7 +29,7 @@ export default defineConfig({
       },
       workbox: {
         navigateFallback: '/index.html',
-        navigateFallbackDenylist: [/^\/api\//],
+        navigateFallbackDenylist: [/^\/api\//, /^\/socket\.io/],
         globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
         runtimeCaching: [
           {
@@ -51,12 +51,16 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': { target: 'http://localhost:3000', changeOrigin: true },
+      // Socket.IO (tiempos en vivo) usa WebSocket hacia la API
+      '/socket.io': { target: 'http://localhost:3000', changeOrigin: true, ws: true },
     },
   },
   preview: {
     port: 4173,
     proxy: {
       '/api': { target: 'http://localhost:3000', changeOrigin: true },
+      // Socket.IO (tiempos en vivo) usa WebSocket hacia la API
+      '/socket.io': { target: 'http://localhost:3000', changeOrigin: true, ws: true },
     },
   },
 });

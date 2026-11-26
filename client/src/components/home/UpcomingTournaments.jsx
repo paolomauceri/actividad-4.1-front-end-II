@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { CalendarDays, Flag, MapPin, RefreshCw, UserPlus } from 'lucide-react';
 import { apiFetch } from '../../api/client.js';
 import { useAuth } from '../../auth/AuthContext.jsx';
@@ -25,7 +26,11 @@ function TarjetaTorneo({ torneo, conSesion }) {
       </div>
       <div className={styles.body}>
         <span className={`${styles.badge} ${styles[estado.clase]}`}>{estado.texto}</span>
-        <h3 className={styles.name}>{torneo.nombre}</h3>
+        <h3 className={styles.name}>
+          <Link to={`/torneos/${torneo.id}`} className={styles.nameLink}>
+            {torneo.nombre}
+          </Link>
+        </h3>
         <ul className={styles.meta}>
           <li>
             <MapPin aria-hidden="true" />

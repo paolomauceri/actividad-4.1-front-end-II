@@ -100,7 +100,8 @@ describe('GET /api/torneos', () => {
   });
 
   it('filtra por estado', async () => {
-    const res = await request(app).get('/api/torneos?estado=EN_CURSO');
+    // limit=100: otros archivos de tests también crean torneos EN_CURSO
+    const res = await request(app).get('/api/torneos?estado=EN_CURSO&limit=100');
 
     expect(res.body.datos.map((t) => t.nombre)).toContain('Circuito Costa Triatlón y Atletismo 2026');
     expect(res.body.datos.every((t) => t.estado === 'EN_CURSO')).toBe(true);

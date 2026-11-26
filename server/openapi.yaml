@@ -14,6 +14,14 @@ info:
     `{ "error": { "code", "message", "details"? } }`.
 
     Credenciales de prueba (seed): `admin@podio.local` / `Admin123!`.
+
+    **Tiempo real (Socket.IO, mismo servidor, ruta `/socket.io`):**
+    - Cliente → servidor `prueba:seguir` (pruebaId: number, ack?) → `ack({ ok })`. Une al cliente a la sala de esa prueba.
+    - Cliente → servidor `prueba:dejar` (pruebaId: number, ack?) → `ack({ ok })`.
+    - Servidor → cliente `resultados:actualizados` con el mismo cuerpo que
+      `GET /api/pruebas/{id}/resultados` (`ResultadosPrueba`), cada vez que un juez
+      guarda, corrige o se borra un resultado de esa prueba.
+    Socket.IO solo difunde: las escrituras siempre van por REST con JWT.
   contact:
     name: Brayan Teran y Paolo Mauceri
 servers:
@@ -36,6 +44,8 @@ tags:
     description: Consulta y alta de atletas (ADMIN) y perfil propio (ATLETA)
   - name: Inscripciones
     description: Inscripción en pruebas con categoría y dorsal automáticos
+  - name: Resultados
+    description: Registro de tiempos por el juez y clasificación por categoría y general
   - name: Deportes
     description: Catálogo de disciplinas
   - name: Sistema
@@ -712,6 +722,88 @@ paths:
         '404': { $ref: '#/components/responses/NotFound' }
         '409': { $ref: '#/components/responses/Conflict' }
 
+  /api/inscripciones/{id}/resultado:
+    parameters:
+      - { name: id, in: path, required: true, schema: { type: integer }, description: Id de la inscripción }
+    put:
+      tags: [Resultados]
+      summary: Registrar o corregir el resultado (JUEZ, ADMIN)
+      description: |
+        Crea o reemplaza el único resultado de la inscripción y avisa por Socket.IO.
+        `FINALIZADO` exige `tiempoMs` (1 … 86 400 000); `DNF`, `DNS` y `DSQ` no llevan tiempo.
+        Responde 409 `RESULTADO_NO_PERMITIDO` si la inscripción está ANULADA, la prueba CANCELADA
+        o el torneo no está EN_CURSO (con el torneo FINALIZADO solo el ADMIN puede corregir).
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ResultadoRequest' }
+      responses:
+        '200':
+          description: Resultado guardado
+          content:
+            application/json:
+              schema: { type: object, properties: { resultado: { $ref: '#/components/schemas/Resultado' } } }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+    delete:
+      tags: [Resultados]
+      summary: Borrar el resultado (ADMIN)
+      security: [{ bearerAuth: [] }]
+      responses:
+        '204': { description: Resultado borrado }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /api/pruebas/{id}/resultados:
+    get:
+      tags: [Resultados]
+      summary: Clasificación de una prueba (público)
+      description: Por categoría y general. Los empates comparten posición y la siguiente salta; DNF, DNS y DSQ van al final sin posición.
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+      responses:
+        '200':
+          description: Clasificación
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ResultadosPrueba' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /api/resultados/mios:
+    get:
+      tags: [Resultados]
+      summary: Mis resultados (ATLETA)
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Resultados del atleta con su posición en la categoría y en la general
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    inscripcionId: { type: integer }
+                    pruebaId: { type: integer }
+                    prueba: { type: string, example: 50 m libre }
+                    pruebaFechaHora: { type: string, example: '2026-10-17 09:00:00' }
+                    torneoId: { type: integer }
+                    torneo: { type: string }
+                    categoria: { type: string, example: Adulto Femenino }
+                    dorsal: { type: integer }
+                    estado: { type: string, enum: [FINALIZADO, DNF, DNS, DSQ] }
+                    tiempoMs: { type: integer, nullable: true, example: 29840 }
+                    posicionCategoria: { type: integer, nullable: true }
+                    posicionGeneral: { type: integer, nullable: true }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
   /api/deportes:
     get:
       tags: [Deportes]
@@ -987,6 +1079,69 @@ components:
         id: { type: integer, example: 1 }
         nombre: { type: string, example: Aguas abiertas }
         descripcion: { type: string, nullable: true }
+
+    ResultadoRequest:
+      type: object
+      required: [estado]
+      properties:
+        estado: { type: string, enum: [FINALIZADO, DNF, DNS, DSQ] }
+        tiempoMs: { type: integer, minimum: 1, maximum: 86400000, nullable: true, example: 754560 }
+        observaciones: { type: string, maxLength: 255, nullable: true }
+
+    Resultado:
+      type: object
+      properties:
+        inscripcionId: { type: integer }
+        pruebaId: { type: integer }
+        estado: { type: string, enum: [FINALIZADO, DNF, DNS, DSQ] }
+        tiempoMs: { type: integer, nullable: true, example: 754560 }
+        observaciones: { type: string, nullable: true }
+        registradoEn: { type: string, example: '2026-11-26 09:12:30' }
+        registradoPor: { type: integer, description: Id del juez o administrador }
+
+    FilaClasificacion:
+      type: object
+      properties:
+        inscripcionId: { type: integer }
+        dorsal: { type: integer, example: 301 }
+        atletaId: { type: integer }
+        atleta: { type: string, example: Camila Torres }
+        club: { type: string, nullable: true }
+        categoriaId: { type: integer }
+        categoria: { type: string, example: Adulto Femenino }
+        estado: { type: string, enum: [FINALIZADO, DNF, DNS, DSQ] }
+        tiempoMs: { type: integer, nullable: true }
+        posicion: { type: integer, nullable: true, description: null si no terminó }
+
+    ResultadosPrueba:
+      type: object
+      properties:
+        prueba:
+          type: object
+          properties:
+            id: { type: integer }
+            nombre: { type: string }
+            distanciaM: { type: integer }
+            fechaHora: { type: string }
+            estado: { type: string, enum: [PROGRAMADA, EN_CURSO, FINALIZADA, CANCELADA] }
+            deporte: { type: string }
+            torneo:
+              type: object
+              properties:
+                id: { type: integer }
+                nombre: { type: string }
+                estado: { type: string }
+        categorias:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: integer }
+              nombre: { type: string }
+              sexo: { type: string, enum: [F, M, MIXTO] }
+              clasificacion: { type: array, items: { $ref: '#/components/schemas/FilaClasificacion' } }
+        general: { type: array, items: { $ref: '#/components/schemas/FilaClasificacion' } }
+        actualizadoEn: { type: string, format: date-time }
 
     Error:
       type: object

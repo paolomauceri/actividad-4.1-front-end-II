@@ -166,3 +166,14 @@
     background-position: -200% 0;
   }
 }
+
+/* El nombre lleva al detalle del torneo */
+.nameLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+.nameLink:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}

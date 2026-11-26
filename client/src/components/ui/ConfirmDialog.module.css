@@ -1,0 +1,11 @@
+.mensaje {
+  margin: 0 0 var(--space-5);
+  color: var(--color-text-muted);
+}
+
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}

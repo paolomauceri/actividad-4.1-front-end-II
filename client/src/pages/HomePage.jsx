@@ -14,7 +14,7 @@ export function HomePage() {
       {bienvenida && (
         <div className="container" style={{ paddingTop: 'var(--space-6)' }}>
           <Alert tone="success" title={`¡Listo, ${bienvenida}! Tu cuenta de atleta fue creada.`}>
-            Ya puedes revisar los próximos torneos. La inscripción a pruebas estará disponible muy pronto.
+            Ya puedes inscribirte en las pruebas de los torneos abiertos desde «Mi panel».
           </Alert>
         </div>
       )}

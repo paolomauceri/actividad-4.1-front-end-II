@@ -14,6 +14,7 @@ import { pruebasRouter } from './modules/pruebas/pruebas.routes.js';
 import { categoriasRouter } from './modules/categorias/categorias.routes.js';
 import { atletasRouter } from './modules/atletas/atletas.routes.js';
 import { inscripcionesRouter } from './modules/inscripciones/inscripciones.routes.js';
+import { resultadosRouter } from './modules/resultados/resultados.routes.js';
 import { docsRouter } from './docs/swagger.js';
 import { notFound } from './middleware/not-found.js';
 import { errorHandler } from './middleware/error-handler.js';
@@ -71,6 +72,8 @@ export function createApp({
   app.use('/api/dashboard', dashboardRouter);
   app.use('/api/torneos', torneosRouter);
   app.use('/api/deportes', deportesRouter);
+  // Antes que inscripciones: ese router exige sesión para todo /api/inscripciones/*
+  app.use('/api', resultadosRouter);
   app.use('/api', pruebasRouter);
   app.use('/api', categoriasRouter);
   app.use('/api/atletas', atletasRouter);
