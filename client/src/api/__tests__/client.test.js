@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { apiFetch, ApiError } from '../client.js';
 import { TOKEN_KEY, getToken, setToken } from '../token.js';
 
@@ -12,11 +11,11 @@ function respuesta(status, body) {
 }
 
 beforeEach(() => {
-  vi.stubGlobal('fetch', vi.fn());
+  global.fetch = jest.fn();
 });
 
 afterEach(() => {
-  vi.unstubAllGlobals();
+  delete global.fetch;
 });
 
 describe('apiFetch', () => {
@@ -67,7 +66,7 @@ describe('apiFetch', () => {
 
   it('ante un 401 con sesión guardada borra el token y emite auth:logout', async () => {
     setToken('token-vencido');
-    const escucha = vi.fn();
+    const escucha = jest.fn();
     window.addEventListener('auth:logout', escucha);
     fetch.mockReturnValue(respuesta(401, { error: { code: 'UNAUTHORIZED', message: 'Sesión expirada' } }));
 

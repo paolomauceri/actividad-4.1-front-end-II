@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import DashboardPage from '../DashboardPage.jsx';
@@ -38,8 +37,8 @@ const llamadasA = (path) => fetch.mock.calls.filter(([url]) => url === path);
 const usuarioAdmin = { id: 1, nombre: 'Laura', apellido: 'Méndez', rol: 'ADMIN' };
 const renderDashboard = () => renderConAuth(<DashboardPage />, { ruta: '/admin', auth: { usuario: usuarioAdmin } });
 
-beforeEach(() => vi.stubGlobal('fetch', vi.fn()));
-afterEach(() => vi.unstubAllGlobals());
+beforeEach(() => { global.fetch = jest.fn(); });
+afterEach(() => { delete global.fetch; });
 
 describe('DashboardPage', () => {
   it('muestra los cuatro indicadores del resumen', async () => {

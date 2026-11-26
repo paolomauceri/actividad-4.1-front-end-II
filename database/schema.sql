@@ -183,7 +183,8 @@ CREATE TABLE resultados (
 
 -- ---------------------------------------------------------------------
 -- Vista: clasificación por prueba y categoría (la posición se calcula,
--- no se guarda). Solo los FINALIZADO reciben posición.
+-- no se guarda). Solo los FINALIZADO reciben posición. Las inscripciones
+-- ANULADA no participan.
 -- ---------------------------------------------------------------------
 CREATE VIEW vw_clasificacion AS
 SELECT
@@ -206,4 +207,33 @@ JOIN inscripciones i ON i.id = r.inscripcion_id
 JOIN pruebas p       ON p.id = i.prueba_id
 JOIN categorias c    ON c.id = i.categoria_id
 JOIN atletas a       ON a.usuario_id = i.atleta_id
-JOIN usuarios u      ON u.id = i.atleta_id;
+JOIN usuarios u      ON u.id = i.atleta_id
+WHERE i.estado <> 'ANULADA';
+
+-- ---------------------------------------------------------------------
+-- Vista: clasificación general de cada prueba (todas las categorías
+-- juntas). Sirve para los "ganadores generales".
+-- ---------------------------------------------------------------------
+CREATE VIEW vw_clasificacion_general AS
+SELECT
+  p.torneo_id,
+  i.prueba_id,
+  i.categoria_id,
+  c.nombre                           AS categoria,
+  i.dorsal,
+  i.atleta_id,
+  CONCAT(u.nombre, ' ', u.apellido)  AS atleta,
+  a.club,
+  r.estado,
+  r.tiempo_ms,
+  CASE WHEN r.estado = 'FINALIZADO'
+       THEN RANK() OVER (PARTITION BY i.prueba_id, r.estado
+                         ORDER BY r.tiempo_ms)
+  END                                AS posicion_general
+FROM resultados r
+JOIN inscripciones i ON i.id = r.inscripcion_id
+JOIN pruebas p       ON p.id = i.prueba_id
+JOIN categorias c    ON c.id = i.categoria_id
+JOIN atletas a       ON a.usuario_id = i.atleta_id
+JOIN usuarios u      ON u.id = i.atleta_id
+WHERE i.estado <> 'ANULADA';

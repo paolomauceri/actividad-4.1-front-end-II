@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { AuthProvider, useAuth } from '../AuthContext.jsx';
 import { TOKEN_KEY, setToken } from '../../api/token.js';
@@ -12,8 +11,8 @@ function EstadoSesion() {
 const json = (status, body) =>
   Promise.resolve(new Response(body === undefined ? '' : JSON.stringify(body), { status }));
 
-beforeEach(() => vi.stubGlobal('fetch', vi.fn()));
-afterEach(() => vi.unstubAllGlobals());
+beforeEach(() => { global.fetch = jest.fn(); });
+afterEach(() => { delete global.fetch; });
 
 describe('AuthProvider al abrir la app con un token guardado', () => {
   it('recupera el usuario con /api/auth/me', async () => {

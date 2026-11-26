@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Link, MemoryRouter, Route, Routes } from 'react-router-dom';
@@ -9,7 +8,7 @@ let desplazados;
 beforeEach(() => {
   desplazados = [];
   // jsdom no implementa scroll: registramos a qué elemento se pidió desplazar
-  Element.prototype.scrollIntoView = vi.fn(function registrar() {
+  Element.prototype.scrollIntoView = jest.fn(function registrar() {
     desplazados.push(this.id);
   });
 });

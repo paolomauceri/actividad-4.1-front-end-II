@@ -8,8 +8,7 @@ import { Button } from '../components/ui/Button.jsx';
 import { Input } from '../components/ui/Input.jsx';
 import { PasswordInput } from '../components/ui/PasswordInput.jsx';
 import styles from './AuthPages.module.css';
-
-const DESTINO_POR_ROL = { ADMIN: '/admin', JUEZ: '/', ATLETA: '/' };
+import { destinoPorRol } from '../auth/destinos.js';
 
 function mensajeDeError(err) {
   if (err?.code === 'INVALID_CREDENTIALS') return 'Correo o contraseña incorrectos';
@@ -53,7 +52,7 @@ export default function LoginPage() {
     try {
       const usuario = await login(datos.email.trim(), datos.password);
       const desde = location.state?.from?.pathname;
-      const destino = desde && desde !== '/login' ? desde : DESTINO_POR_ROL[usuario.rol] ?? '/';
+      const destino = desde && desde !== '/login' ? desde : destinoPorRol(usuario.rol);
       navigate(destino, { replace: true });
     } catch (err) {
       setErrorGeneral(mensajeDeError(err));
@@ -99,17 +98,19 @@ export default function LoginPage() {
           Iniciar sesión
         </Button>
 
-        {import.meta.env.DEV && (
-          <div className={styles.demo}>
-            <p className={styles.demoTitulo}>Cuentas de prueba</p>
-            <p>
-              Administrador: <code>admin@podio.local</code> / <code>Admin123!</code>
-            </p>
-            <p>
-              Atleta: <code>valentina@podio.local</code> / <code>Atleta123!</code>
-            </p>
-          </div>
-        )}
+        {/* App de demostración: las cuentas de prueba se muestran siempre */}
+        <div className={styles.demo}>
+          <p className={styles.demoTitulo}>Cuentas de prueba</p>
+          <p>
+            Administrador: <code>admin@podio.local</code> / <code>Admin123!</code>
+          </p>
+          <p>
+            Juez: <code>juez@podio.local</code> / <code>Juez123!</code>
+          </p>
+          <p>
+            Atleta: <code>valentina@podio.local</code> / <code>Atleta123!</code>
+          </p>
+        </div>
       </form>
     </AuthShell>
   );

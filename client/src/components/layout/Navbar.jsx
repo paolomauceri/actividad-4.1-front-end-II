@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, LogIn, LogOut, Menu, UserPlus, X } from 'lucide-react';
 import { useAuth } from '../../auth/AuthContext.jsx';
+import { destinoPorRol } from '../../auth/destinos.js';
 import { Button } from '../ui/Button.jsx';
 import { Logo } from './Logo.jsx';
 import { ThemeToggle } from './ThemeToggle.jsx';
@@ -11,7 +12,7 @@ const ROL_LEGIBLE = { ADMIN: 'Administrador', JUEZ: 'Juez', ATLETA: 'Atleta' };
 
 const ENLACES = [
   { to: '/', label: 'Inicio', end: true },
-  { to: '/#torneos', label: 'Torneos' },
+  { to: '/torneos', label: 'Torneos' },
   { to: '/#como-funciona', label: 'Cómo funciona' },
 ];
 
@@ -58,11 +59,9 @@ export function Navbar() {
                   <span className={styles.userName}>{usuario.nombre}</span>
                   <span className={styles.role}>{ROL_LEGIBLE[usuario.rol]}</span>
                 </span>
-                {usuario.rol === 'ADMIN' && (
-                  <Button to="/admin" variant="secondary" icon={LayoutDashboard}>
-                    Panel
-                  </Button>
-                )}
+                <Button to={destinoPorRol(usuario.rol)} variant="secondary" icon={LayoutDashboard}>
+                  Mi panel
+                </Button>
                 <Button variant="ghost" icon={LogOut} onClick={salir}>
                   Salir
                 </Button>

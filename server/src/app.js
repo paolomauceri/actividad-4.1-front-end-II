@@ -12,15 +12,44 @@ import { torneosRouter } from './modules/torneos/torneos.routes.js';
 import { docsRouter } from './docs/swagger.js';
 import { notFound } from './middleware/not-found.js';
 import { errorHandler } from './middleware/error-handler.js';
+import { authLimiter } from './middleware/rate-limit.js';
+import { serveClient } from './static-client.js';
 
-export function createApp() {
+/**
+ * @param {{ authRateLimit?: number, serveClient?: boolean, clientDist?: string }} [opciones]
+ *   authRateLimit: intentos de login/registro por IP cada 15 min.
+ *   serveClient:   entregar también la app React (producción).
+ */
+export function createApp({
+  authRateLimit = env.AUTH_RATE_LIMIT,
+  serveClient: entregarCliente = env.NODE_ENV === 'production',
+  clientDist = env.CLIENT_DIST,
+} = {}) {
   const app = express();
+  const produccion = env.NODE_ENV === 'production';
 
   app.disable('x-powered-by');
-  app.use(helmet());
+  // Render (y cualquier proxy) agrega X-Forwarded-For: se necesita para limitar por IP real
+  if (produccion) app.set('trust proxy', 1);
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          // Socket.IO usa WebSocket hacia el mismo servidor
+          'connect-src': ["'self'", 'ws:', 'wss:'],
+          // En local (http) no se fuerza https para los recursos
+          'upgrade-insecure-requests': produccion ? [] : null,
+        },
+      },
+    }),
+  );
   app.use(cors({ origin: env.CORS_ORIGIN }));
   app.use(express.json({ limit: '100kb' }));
-  if (env.NODE_ENV !== 'test') app.use(morgan('dev'));
+  if (env.NODE_ENV !== 'test') app.use(morgan(produccion ? 'combined' : 'dev'));
+
+  const limitarAuth = authLimiter(authRateLimit);
+  app.use('/api/auth/login', limitarAuth);
+  app.use('/api/auth/register', limitarAuth);
 
   // GET /api — índice de la API con enlaces útiles
   app.get('/api', (req, res) => {
@@ -37,6 +66,8 @@ export function createApp() {
   app.use('/api/dashboard', dashboardRouter);
   app.use('/api/torneos', torneosRouter);
   app.use('/api/docs', docsRouter);
+
+  if (entregarCliente) serveClient(app, clientDist);
 
   app.use(notFound);
   app.use(errorHandler);

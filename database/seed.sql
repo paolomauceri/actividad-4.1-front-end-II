@@ -3,6 +3,8 @@
 --  Ejecutar DESPUÉS de schema.sql:
 --    mysql -u root -p -e "source database/seed.sql"
 --
+--  Las fechas son relativas al día en que se carga (ver bloque final).
+--
 --  Credenciales de prueba (solo desarrollo):
 --    admin@podio.local   / Admin123!   (ADMIN)
 --    juez@podio.local    / Juez123!    (JUEZ)
@@ -66,7 +68,7 @@ INSERT INTO torneos (id, nombre, descripcion, sede, fecha_inicio, fecha_fin, est
       'Lago Azul, Playa Norte', '2026-12-12', '2026-12-13', 'ABIERTO', 1),
   (2, 'Circuito Costa Triatlón y Atletismo 2026',
       'Semana multideporte en el malecón: 5 km, triatlón sprint y 10 km.',
-      'Malecón Costa Azul', '2026-11-18', '2026-11-22', 'EN_CURSO', 1),
+      'Malecón Costa Azul', '2026-11-22', '2026-11-27', 'EN_CURSO', 1),
   (3, 'Interclubes de Natación Otoño 2026',
       'Torneo de piscina entre clubes, categorías juvenil, adulto y máster.',
       'Complejo Acuático Municipal', '2026-10-17', '2026-10-18', 'FINALIZADO', 1),
@@ -81,9 +83,9 @@ INSERT INTO pruebas (id, torneo_id, deporte_id, nombre, distancia_m, fecha_hora,
   (1,  1, 1, 'Aguas abiertas 1.500 m',                   1500,  '2026-12-12 08:00:00',  80, 'PROGRAMADA'),
   (2,  1, 1, 'Aguas abiertas 5.000 m',                   5000,  '2026-12-12 10:30:00',  50, 'PROGRAMADA'),
   (3,  1, 3, 'Acuatlón sprint (750 m + 5 km)',           5750,  '2026-12-13 08:00:00',  60, 'PROGRAMADA'),
-  (4,  2, 5, 'Atletismo 5 km',                           5000,  '2026-11-18 07:30:00', 150, 'FINALIZADA'),
-  (5,  2, 4, 'Triatlón sprint (750 m + 20 km + 5 km)',  25750,  '2026-11-21 07:00:00', 100, 'PROGRAMADA'),
-  (6,  2, 5, 'Atletismo 10 km',                         10000,  '2026-11-22 07:30:00', 150, 'PROGRAMADA'),
+  (4,  2, 5, 'Atletismo 5 km',                           5000,  '2026-11-22 07:30:00', 150, 'FINALIZADA'),
+  (5,  2, 4, 'Triatlón sprint (750 m + 20 km + 5 km)',  25750,  '2026-11-25 07:00:00', 100, 'EN_CURSO'),
+  (6,  2, 5, 'Atletismo 10 km',                         10000,  '2026-11-27 07:30:00', 150, 'PROGRAMADA'),
   (7,  3, 2, '50 m libre',                                  50,  '2026-10-17 09:00:00',  40, 'FINALIZADA'),
   (8,  3, 2, '100 m libre',                                100,  '2026-10-17 11:00:00',  40, 'FINALIZADA'),
   (9,  3, 2, '200 m combinado individual',                 200,  '2026-10-18 09:00:00',  32, 'FINALIZADA'),
@@ -156,21 +158,21 @@ INSERT INTO inscripciones (id, prueba_id, atleta_id, categoria_id, dorsal, estad
   (32, 6, 8,  9,  401, 'CONFIRMADA', '2026-11-08 09:00:00'),
   (33, 6, 14, 11, 402, 'CONFIRMADA', '2026-11-09 10:00:00'),
   (34, 6, 10, 11, 403, 'CONFIRMADA', '2026-11-10 17:45:00'),
-  (35, 6, 13, 10, 404, 'PENDIENTE',  '2026-11-17 22:00:00'),
+  (35, 6, 13, 10, 404, 'CONFIRMADA', '2026-11-17 22:00:00'),
   (36, 6, 5,  8,  405, 'ANULADA',    '2026-11-11 16:00:00'),
   -- Torneo 1 · Aguas abiertas 1.500 m
   (37, 1, 4,  1,  11,  'CONFIRMADA', '2026-11-05 18:00:00'),
   (38, 1, 10, 5,  12,  'CONFIRMADA', '2026-11-06 17:50:00'),
   (39, 1, 11, 6,  13,  'CONFIRMADA', '2026-11-07 06:35:00'),
-  (40, 1, 12, 1,  14,  'PENDIENTE',  '2026-11-16 19:00:00'),
-  (41, 1, 14, 5,  15,  'PENDIENTE',  '2026-11-18 08:20:00'),
+  (40, 1, 12, 1,  14,  'CONFIRMADA', '2026-11-16 19:00:00'),
+  (41, 1, 14, 5,  15,  'CONFIRMADA', '2026-11-18 08:20:00'),
   -- Torneo 1 · Aguas abiertas 5.000 m
   (42, 2, 7,  4,  21,  'CONFIRMADA', '2026-11-06 21:10:00'),
-  (43, 2, 11, 6,  22,  'PENDIENTE',  '2026-11-18 06:40:00'),
+  (43, 2, 11, 6,  22,  'CONFIRMADA', '2026-11-18 06:40:00'),
   -- Torneo 1 · Acuatlón sprint
   (44, 3, 5,  2,  31,  'CONFIRMADA', '2026-11-09 16:30:00'),
   (45, 3, 15, 4,  32,  'CONFIRMADA', '2026-11-15 14:10:00'),
-  (46, 3, 6,  3,  33,  'PENDIENTE',  '2026-11-18 07:00:00');
+  (46, 3, 6,  3,  33,  'CONFIRMADA', '2026-11-18 07:00:00');
 
 -- ---------------------------------------------------------------------
 -- Resultados (tiempos en milisegundos)
@@ -200,8 +202,23 @@ INSERT INTO resultados (inscripcion_id, tiempo_ms, estado, registrado_por, regis
   (19, NULL,   'DNF',        2, '2026-10-18 09:41:00', 'Abandonó en el tramo de pecho'),
   (20, 159770, 'FINALIZADO', 2, '2026-10-18 09:42:00', NULL),
   -- 5 km
-  (21, 1361000, 'FINALIZADO', 3, '2026-11-18 08:15:00', NULL),
-  (22, 1085000, 'FINALIZADO', 3, '2026-11-18 08:15:00', NULL),
-  (23, 1162400, 'FINALIZADO', 3, '2026-11-18 08:16:00', NULL),
-  (24, 1438700, 'FINALIZADO', 3, '2026-11-18 08:16:00', NULL),
-  (25, NULL,    'DNS',        3, '2026-11-18 08:17:00', 'No se presentó a la largada');
+  (21, 1361000, 'FINALIZADO', 3, '2026-11-22 08:15:00', NULL),
+  (22, 1085000, 'FINALIZADO', 3, '2026-11-22 08:15:00', NULL),
+  (23, 1162400, 'FINALIZADO', 3, '2026-11-22 08:16:00', NULL),
+  (24, 1438700, 'FINALIZADO', 3, '2026-11-22 08:16:00', NULL),
+  (25, NULL,    'DNS',        3, '2026-11-22 08:17:00', 'No se presentó a la largada');
+
+-- ---------------------------------------------------------------------
+-- Fechas relativas: los datos están escritos como si hoy fuera 2026-11-25.
+-- Este bloque corre todas las fechas los días que hayan pasado desde entonces,
+-- así siempre hay un torneo EN CURSO (con una prueba hoy), uno ABIERTO en
+-- el futuro y uno FINALIZADO en el pasado, sin importar cuándo se carguen.
+-- ---------------------------------------------------------------------
+SET @desfase := DATEDIFF(CURDATE(), '2026-11-25');
+
+UPDATE usuarios      SET creado_en = DATE_ADD(creado_en, INTERVAL @desfase DAY);
+UPDATE torneos       SET fecha_inicio = DATE_ADD(fecha_inicio, INTERVAL @desfase DAY),
+                         fecha_fin    = DATE_ADD(fecha_fin,    INTERVAL @desfase DAY);
+UPDATE pruebas       SET fecha_hora = DATE_ADD(fecha_hora, INTERVAL @desfase DAY);
+UPDATE inscripciones SET creado_en = DATE_ADD(creado_en, INTERVAL @desfase DAY);
+UPDATE resultados    SET registrado_en = DATE_ADD(registrado_en, INTERVAL @desfase DAY);

@@ -1,4 +1,3 @@
-import { describe, it, expect, vi } from 'vitest';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import RegisterPage from '../RegisterPage.jsx';
@@ -31,7 +30,7 @@ const enviar = (user) => user.click(screen.getByRole('button', { name: /crear mi
 describe('RegisterPage', () => {
   it('muestra errores por campo y no llama a la API si el formulario está vacío', async () => {
     const user = userEvent.setup();
-    const register = vi.fn();
+    const register = jest.fn();
     renderConAuth(<RegisterPage />, { ruta: '/registro', auth: { register } });
 
     await enviar(user);
@@ -43,7 +42,7 @@ describe('RegisterPage', () => {
 
   it('avisa si las contraseñas no coinciden', async () => {
     const user = userEvent.setup();
-    const register = vi.fn();
+    const register = jest.fn();
     renderConAuth(<RegisterPage />, { ruta: '/registro', auth: { register } });
 
     await completarFormulario(user, { confirmar: 'Distinta123' });
@@ -55,7 +54,7 @@ describe('RegisterPage', () => {
 
   it('exige una contraseña con letras y números', async () => {
     const user = userEvent.setup();
-    const register = vi.fn();
+    const register = jest.fn();
     renderConAuth(<RegisterPage />, { ruta: '/registro', auth: { register } });
 
     await completarFormulario(user, { password: 'soloLetras', confirmar: 'soloLetras' });
@@ -67,7 +66,7 @@ describe('RegisterPage', () => {
 
   it('muestra el error del servidor bajo el campo correspondiente (409 EMAIL_TAKEN)', async () => {
     const user = userEvent.setup();
-    const register = vi.fn().mockRejectedValue(
+    const register = jest.fn().mockRejectedValue(
       new ApiError(409, 'EMAIL_TAKEN', 'Este correo ya está registrado', [
         { campo: 'email', mensaje: 'Este correo ya está registrado' },
       ]),
@@ -83,7 +82,7 @@ describe('RegisterPage', () => {
 
   it('envía los datos sin la confirmación y lleva al inicio al registrarse', async () => {
     const user = userEvent.setup();
-    const register = vi.fn().mockResolvedValue({ id: 20, nombre: 'Ana', rol: 'ATLETA' });
+    const register = jest.fn().mockResolvedValue({ id: 20, nombre: 'Ana', rol: 'ATLETA' });
     renderConAuth(<RegisterPage />, { ruta: '/registro', auth: { register } });
 
     await completarFormulario(user);

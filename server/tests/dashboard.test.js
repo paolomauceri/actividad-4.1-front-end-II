@@ -115,14 +115,19 @@ describe('GET /api/torneos/proximos', () => {
   it('devuelve fechas, sede, estado, cantidad de pruebas y la lista de deportes', async () => {
     const res = await request(app).get('/api/torneos/proximos');
     const lagoAzul = res.body.find((t) => t.nombre === 'Copa Aguas Abiertas Lago Azul 2026');
+    // El seed usa fechas relativas a hoy: el torneo ABIERTO empieza en 17 días
+    const [{ inicio, fin }] = await query(
+      `SELECT DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 17 DAY), '%Y-%m-%d') AS inicio,
+              DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 18 DAY), '%Y-%m-%d') AS fin`,
+    );
 
     expect(lagoAzul).toEqual({
       id: 1,
       nombre: 'Copa Aguas Abiertas Lago Azul 2026',
       descripcion: expect.any(String),
       sede: 'Lago Azul, Playa Norte',
-      fechaInicio: '2026-12-12',
-      fechaFin: '2026-12-13',
+      fechaInicio: inicio,
+      fechaFin: fin,
       estado: 'ABIERTO',
       pruebas: 3,
       deportes: ['Acuatlón', 'Aguas abiertas'],

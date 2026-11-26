@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { HomePage } from '../HomePage.jsx';
@@ -31,8 +30,8 @@ const torneos = [
 
 const ok = (body) => Promise.resolve(new Response(JSON.stringify(body), { status: 200 }));
 
-beforeEach(() => vi.stubGlobal('fetch', vi.fn()));
-afterEach(() => vi.unstubAllGlobals());
+beforeEach(() => { global.fetch = jest.fn(); });
+afterEach(() => { delete global.fetch; });
 
 describe('HomePage', () => {
   it('muestra los próximos torneos con sede, deportes y estado', async () => {

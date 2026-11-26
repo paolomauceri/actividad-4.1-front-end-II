@@ -4,7 +4,11 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 const serverRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
-const envFile = path.join(serverRoot, process.env.NODE_ENV === 'test' ? '.env.test' : '.env');
+// ENV_FILE permite usar otro archivo (p. ej. .env.produccion para cargar datos en Aiven)
+const envFile = path.resolve(
+  serverRoot,
+  process.env.ENV_FILE ?? (process.env.NODE_ENV === 'test' ? '.env.test' : '.env'),
+);
 
 if (existsSync(envFile)) {
   process.loadEnvFile(envFile);
@@ -18,8 +22,10 @@ function required(name) {
   return value;
 }
 
+const NODE_ENV = process.env.NODE_ENV ?? 'development';
+
 export const env = Object.freeze({
-  NODE_ENV: process.env.NODE_ENV ?? 'development',
+  NODE_ENV,
   PORT: Number(process.env.PORT ?? 3000),
   DB_HOST: process.env.DB_HOST ?? '127.0.0.1',
   DB_PORT: Number(process.env.DB_PORT ?? 3306),
@@ -29,4 +35,17 @@ export const env = Object.freeze({
   JWT_SECRET: required('JWT_SECRET'),
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN ?? '8h',
   CORS_ORIGIN: process.env.CORS_ORIGIN ?? 'http://localhost:5173',
+  // Conexión cifrada (Aiven exige SSL). El certificado CA puede venir con "\n" literales.
+  DB_SSL: process.env.DB_SSL === 'true',
+  DB_SSL_CA: process.env.DB_SSL_CA ? process.env.DB_SSL_CA.replaceAll('\\n', '\n') : undefined,
+  // Intentos de login/registro permitidos por IP cada 15 minutos
+  AUTH_RATE_LIMIT: Number(process.env.AUTH_RATE_LIMIT ?? (NODE_ENV === 'test' ? 1000 : 20)),
+  // Carpeta del build de React que Express sirve en producción
+  CLIENT_DIST: path.resolve(serverRoot, process.env.CLIENT_DIST ?? '../client/dist'),
 });
+
+/** Opciones SSL para mysql2 (undefined si la base no usa SSL). */
+export function opcionesSsl() {
+  if (!env.DB_SSL) return undefined;
+  return env.DB_SSL_CA ? { ca: env.DB_SSL_CA, rejectUnauthorized: true } : { rejectUnauthorized: true };
+}

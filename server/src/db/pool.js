@@ -1,6 +1,6 @@
 // Pool de conexiones MySQL (mysql2/promise) y utilidades de consulta.
 import mysql from 'mysql2/promise';
-import { env } from '../config/env.js';
+import { env, opcionesSsl } from '../config/env.js';
 
 let pool;
 
@@ -16,6 +16,7 @@ function getPool() {
       waitForConnections: true,
       connectionLimit: 10,
       dateStrings: true, // DATE/DATETIME como texto 'YYYY-MM-DD[ HH:mm:ss]', sin conversión de zona horaria
+      ssl: opcionesSsl(),
     });
   }
   return pool;

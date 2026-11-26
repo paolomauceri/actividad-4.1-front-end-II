@@ -5,7 +5,7 @@ import { readFile } from 'node:fs/promises';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import path from 'node:path';
 import mysql from 'mysql2/promise';
-import { env } from '../src/config/env.js';
+import { env, opcionesSsl } from '../src/config/env.js';
 
 const databaseDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'database');
 
@@ -27,6 +27,7 @@ export async function resetDatabase(dbName = env.DB_NAME) {
     password: env.DB_PASSWORD,
     charset: 'utf8mb4',
     multipleStatements: true,
+    ssl: opcionesSsl(),
   });
   try {
     await conn.query(rename(schema));
