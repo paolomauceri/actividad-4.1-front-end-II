@@ -1,4 +1,6 @@
 import '@testing-library/jest-dom';
+// IndexedDB en memoria (la cola offline del juez la usa)
+import 'fake-indexeddb/auto';
 import { TextDecoder, TextEncoder } from 'node:util';
 import { cleanup } from '@testing-library/react';
 

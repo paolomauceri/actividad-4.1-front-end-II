@@ -9,11 +9,21 @@ Aplicación web progresiva para administrar torneos de **natación, aguas abiert
 
 | Capa | Tecnología |
 |---|---|
-| Frontend | React + Vite, React Router, vite-plugin-pwa |
-| Backend | Node.js + Express, JWT, bcryptjs |
+| Frontend | React + Vite, React Router, vite-plugin-pwa (Workbox), IndexedDB (`idb-keyval`) |
+| Backend | Node.js + Express, JWT, bcryptjs, express-validator, helmet, rate limit |
+| Tiempo real | Socket.IO (mismo servidor que la API) |
 | Base de datos | MySQL 8 (driver `mysql2`) |
+| Pruebas | Jest + Testing Library (cliente), Vitest + Supertest (API) |
 | Documentación API | OpenAPI 3 + Swagger UI |
 | Gestión | SCRUM, tablero en Jira |
+
+## Funcionalidades
+
+- **Administrador** (`/admin`): torneos con su estado (borrador → abierto → en curso → finalizado), pruebas, categorías por edad y sexo, inscritos (inscribir, anular, cambiar dorsal), consulta y alta de atletas, usuarios (jueces y administradores) y corrección de resultados.
+- **Juez** (`/juez`): registro de tiempos por dorsal (o DNF / DNS / DSQ). Sin conexión, los tiempos quedan en el dispositivo y se envían solos al volver la red.
+- **Atleta** (`/atleta`): inscripción en pruebas con categoría y dorsal automáticos, sus inscripciones, sus resultados y su perfil.
+- **Público**: torneos, detalle de cada torneo y resultados por prueba con podio, clasificación general y por categoría, actualizados en vivo.
+- **PWA**: se instala en el teléfono y muestra los últimos datos públicos visitados aunque no haya conexión.
 
 ## Estructura del repositorio
 

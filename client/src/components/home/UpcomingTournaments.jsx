@@ -114,7 +114,7 @@ export function UpcomingTournaments() {
       )}
 
       {!estado.cargando && !estado.error && estado.torneos.length === 0 && (
-        <p className={styles.empty}>Por ahora no hay torneos programados. ¡Vuelve pronto!</p>
+        <p className={styles.empty}>Por ahora no hay torneos programados. Cuando se publique uno, aparecerá aquí.</p>
       )}
 
       {!estado.cargando && !estado.error && estado.torneos.length > 0 && (

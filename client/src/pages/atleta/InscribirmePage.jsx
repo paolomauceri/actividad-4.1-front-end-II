@@ -72,7 +72,7 @@ export default function InscribirmePage() {
       )}
       {datos && torneos.length === 0 && (
         <Alert tone="info" title="No hay torneos con inscripciones abiertas en este momento.">
-          Vuelve pronto: cuando un torneo abra sus inscripciones aparecerá aquí.
+          Cuando un torneo abra sus inscripciones aparecerá aquí.
         </Alert>
       )}
 

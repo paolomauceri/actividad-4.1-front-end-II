@@ -1,0 +1,20 @@
+/* No es sticky: las barras superiores ya lo son y se superpondrían */
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-warning-soft);
+  border-bottom: 1px solid var(--color-warning);
+  color: var(--color-warning);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  text-align: center;
+}
+
+.banner svg {
+  flex-shrink: 0;
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+}

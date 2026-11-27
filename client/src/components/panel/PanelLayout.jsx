@@ -4,6 +4,7 @@ import { ExternalLink, LogOut, Menu, X } from 'lucide-react';
 import { useAuth } from '../../auth/AuthContext.jsx';
 import { Logo } from '../layout/Logo.jsx';
 import { ThemeToggle } from '../layout/ThemeToggle.jsx';
+import { OfflineBanner } from '../layout/OfflineBanner.jsx';
 import styles from './PanelLayout.module.css';
 
 /**
@@ -87,6 +88,7 @@ export function PanelLayout({ secciones, etiqueta, rolLegible, inicio }) {
             </button>
           </div>
         </header>
+        <OfflineBanner />
         <main id="panel-contenido" className={styles.content} tabIndex={-1}>
           <Outlet />
         </main>

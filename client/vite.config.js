@@ -42,6 +42,19 @@ export default defineConfig({
               expiration: { maxEntries: 5, maxAgeSeconds: 60 * 60 * 24 },
             },
           },
+          {
+            // Datos públicos ya visitados (torneos, detalle, resultados, deportes): sin
+            // conexión se muestra la última copia. Siempre se intenta la red primero.
+            urlPattern: ({ url, request }) =>
+              request.method === 'GET' &&
+              /^\/api\/(torneos(\/\d+)?|pruebas\/\d+\/resultados|deportes)$/.test(url.pathname),
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'api-publica',
+              networkTimeoutSeconds: 4,
+              expiration: { maxEntries: 60, maxAgeSeconds: 60 * 60 * 24 },
+            },
+          },
         ],
       },
       devOptions: { enabled: false },

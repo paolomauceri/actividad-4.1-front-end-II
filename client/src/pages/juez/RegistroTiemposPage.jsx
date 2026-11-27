@@ -2,9 +2,10 @@ import { useMemo, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, ExternalLink, RefreshCw } from 'lucide-react';
 import { listarInscripciones } from '../../api/inscripciones.js';
-import { guardarResultado } from '../../api/resultados.js';
 import { useAuth } from '../../auth/AuthContext.jsx';
 import { useApi } from '../../hooks/useApi.js';
+import { useColaResultados } from '../../hooks/useColaResultados.js';
+import { ColaPendiente } from '../../components/juez/ColaPendiente.jsx';
 import { useResultadosEnVivo } from '../../hooks/useResultadosEnVivo.js';
 import { PageHeader } from '../../components/panel/PageHeader.jsx';
 import { ListaInscritos } from '../../components/juez/ListaInscritos.jsx';
@@ -44,6 +45,8 @@ export default function RegistroTiemposPage({ volver = '/juez' }) {
   const [mensaje, setMensaje] = useState(null);
   const dorsalRef = useRef(null);
   const formRef = useRef(null);
+  // Cuando la cola envía tiempos guardados sin conexión, se refresca la clasificación
+  const cola = useColaResultados({ alEnviar: () => vivo.recargar() });
 
   // Resultado actual de cada inscripción: la clasificación en vivo manda sobre la lista inicial
   const enVivoPorInscripcion = useMemo(
@@ -71,12 +74,25 @@ export default function RegistroTiemposPage({ volver = '/juez' }) {
     setEnviando(true);
     setMensaje(null);
     try {
-      await guardarResultado(inscripcion.id, datos);
-      setMensaje({ tono: 'success', texto: `Guardado: ${inscripcion.atleta} · ${textoResultado(datos)}` });
+      const { enviado } = await cola.guardar({
+        inscripcionId: inscripcion.id,
+        pruebaId,
+        dorsal: inscripcion.dorsal,
+        atleta: inscripcion.atleta,
+        ...datos,
+      });
+      if (enviado) {
+        setMensaje({ tono: 'success', texto: `Guardado: ${inscripcion.atleta} · ${textoResultado(datos)}` });
+        // Sin Socket.IO la clasificación no llega sola: se vuelve a pedir
+        if (!vivo.enVivo) vivo.recargar();
+      } else {
+        setMensaje({
+          tono: 'warning',
+          texto: `Guardado sin conexión: se enviará automáticamente (${inscripcion.atleta} · ${textoResultado(datos)})`,
+        });
+      }
       setDorsal('');
       dorsalRef.current?.focus();
-      // Sin Socket.IO la clasificación no llega sola: se vuelve a pedir
-      if (!vivo.enVivo) vivo.recargar();
     } catch (err) {
       setMensaje({ tono: 'error', texto: err.message });
     } finally {
@@ -125,6 +141,16 @@ export default function RegistroTiemposPage({ volver = '/juez' }) {
             : 'Los tiempos se registran mientras el torneo está en curso.'}
         </Alert>
       )}
+
+      <ColaPendiente
+        pendientes={cola.pendientes}
+        rechazados={cola.rechazados}
+        requiereLogin={cola.requiereLogin}
+        sincronizando={cola.sincronizando}
+        onEnviar={cola.sincronizar}
+        onCorregir={elegir}
+        onDescartar={cola.descartar}
+      />
 
       <div className={styles.registro}>
         <div className={styles.torneos}>

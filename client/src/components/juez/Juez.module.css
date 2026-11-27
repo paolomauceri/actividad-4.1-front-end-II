@@ -219,3 +219,41 @@
   justify-content: space-between;
   gap: var(--space-2);
 }
+
+/* Cola de tiempos guardados sin conexión */
+.cola {
+  border-color: var(--color-warning);
+  background: var(--color-warning-soft);
+}
+
+.rechazados {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rechazados li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.motivo {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--color-danger);
+}
+
+.botonesRechazo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}

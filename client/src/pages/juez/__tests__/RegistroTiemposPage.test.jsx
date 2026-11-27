@@ -1,5 +1,7 @@
-import { act, screen, within } from '@testing-library/react';
+import { act, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { clear } from 'idb-keyval';
+import { encolar } from '../../../offline/colaResultados.js';
 import RegistroTiemposPage from '../RegistroTiemposPage.jsx';
 import { renderConAuth } from '../../../test/renderConAuth.jsx';
 import { llamadas, mockApi } from '../../../test/mockApi.js';
@@ -45,7 +47,8 @@ const INSCRITOS = [
   { id: 27, pruebaId: 5, dorsal: 302, atleta: 'Diego Paredes', categoria: 'Adulto Masculino', estado: 'CONFIRMADA', resultado: null },
 ];
 
-beforeEach(() => {
+beforeEach(async () => {
+  await clear();
   socketFalso.emit.mockClear();
   mockApi({
     'GET /api/pruebas/5/resultados': resultados(),
@@ -128,6 +131,48 @@ describe('RegistroTiemposPage', () => {
 
     expect(screen.getByLabelText(/dorsal/i)).toHaveValue('302');
     expect(within(screen.getByRole('region', { name: /atleta seleccionado/i })).getByText('Diego Paredes')).toBeInTheDocument();
+  });
+
+  it('sin red guarda el tiempo en la cola y lo envía al volver la conexión', async () => {
+    let redCaida = true;
+    const api = global.fetch;
+    global.fetch = jest.fn((path, op = {}) =>
+      redCaida && op.method === 'PUT' ? Promise.reject(new TypeError('Failed to fetch')) : api(path, op),
+    );
+    const user = userEvent.setup();
+    renderPagina();
+    await screen.findByRole('heading', { name: 'Triatlón sprint' });
+
+    await user.type(screen.getByLabelText(/dorsal/i), '301');
+    await user.type(screen.getByLabelText(/^tiempo/i), '12:34.56');
+    await user.click(screen.getByRole('button', { name: /guardar tiempo/i }));
+
+    expect(await screen.findByText('1 pendiente de envío')).toBeInTheDocument();
+    expect(screen.getByText(/guardado sin conexión: se enviará automáticamente/i)).toBeInTheDocument();
+
+    redCaida = false;
+    act(() => window.dispatchEvent(new Event('online')));
+
+    await waitFor(() => expect(screen.queryByText('1 pendiente de envío')).not.toBeInTheDocument());
+    const envios = llamadas('PUT', '/api/inscripciones/26/resultado');
+    expect(envios).toHaveLength(2);
+    expect(envios[1].body).toEqual({ estado: 'FINALIZADO', tiempoMs: 754560 });
+  });
+
+  it('muestra un tiempo de la cola que el servidor rechazó y permite descartarlo', async () => {
+    await encolar({ inscripcionId: 26, pruebaId: 5, dorsal: 301, atleta: 'Camila Torres', estado: 'DNS' });
+    mockApi({
+      'GET /api/pruebas/5/resultados': resultados(),
+      'GET /api/inscripciones': INSCRITOS,
+      'PUT /api/inscripciones/26/resultado': [409, { error: { code: 'RESULTADO_NO_PERMITIDO', message: 'La inscripción está anulada.' } }],
+    });
+    const user = userEvent.setup();
+    renderPagina();
+
+    expect(await screen.findByText('La inscripción está anulada.')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Descartar el resultado de Camila Torres' }));
+
+    await waitFor(() => expect(screen.queryByText('La inscripción está anulada.')).not.toBeInTheDocument());
   });
 
   it('muestra el error del servidor', async () => {
