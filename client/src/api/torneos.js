@@ -9,6 +9,12 @@ export const query = (params) => {
 
 export const listarTorneos = (params = {}, signal) => apiFetch(`/api/torneos${query(params)}`, { signal });
 export const obtenerTorneo = (id, signal) => apiFetch(`/api/torneos/${id}`, { signal });
+
+// Versiones públicas (sin token): lo que ve cualquier visitante. Se pueden guardar
+// para verlas sin conexión sin mezclar los torneos en borrador que ve el admin.
+export const torneosPublicos = (params = {}, signal) =>
+  apiFetch(`/api/torneos${query(params)}`, { signal, auth: false });
+export const torneoPublico = (id, signal) => apiFetch(`/api/torneos/${id}`, { signal, auth: false });
 export const crearTorneo = (datos) => apiFetch('/api/torneos', { method: 'POST', body: datos });
 export const actualizarTorneo = (id, datos) => apiFetch(`/api/torneos/${id}`, { method: 'PUT', body: datos });
 export const cambiarEstadoTorneo = (id, estado) =>

@@ -1,6 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { guardarResultado } from '../api/resultados.js';
-import { descartar as descartarDeCola, encolar, listarCola, sincronizar as sincronizarCola } from '../offline/colaResultados.js';
+import {
+  descartar as descartarDeCola,
+  encolar,
+  esperarSincronizacion,
+  listarCola,
+  sincronizar as sincronizarCola,
+} from '../offline/colaResultados.js';
+
+/** Errores que no dependen del dato: el tiempo se guarda en la cola y se reintenta. */
+const sePuedeReintentar = (err) => err?.code === 'NETWORK_ERROR' || err?.status === 401 || err?.status >= 500;
 
 /** Cuerpo del PUT a partir de un ítem (sin los datos que solo usa la cola). */
 function cuerpo({ estado, tiempoMs, observaciones }) {
@@ -62,11 +71,14 @@ export function useColaResultados({ alEnviar } = {}) {
   }, [sincronizar]);
 
   /**
-   * Envía el resultado; sin red lo encola. Otros errores (409, 400…) se lanzan.
-   * @returns {Promise<{ enviado: boolean }>}
+   * Envía el resultado. Sin red, con la sesión vencida (401) o con el servidor caído
+   * lo deja en la cola; los rechazos por el dato (400, 409…) se lanzan.
+   * @returns {Promise<{ enviado: boolean, requiereLogin?: boolean }>}
    */
   const guardar = useCallback(
     async (item) => {
+      // Si la cola se está enviando, se espera: así un tiempo viejo no llega después del nuevo
+      await esperarSincronizacion();
       try {
         await enviar(item);
         // Si quedaba un tiempo viejo de esta inscripción en la cola, ya no sirve
@@ -74,10 +86,12 @@ export function useColaResultados({ alEnviar } = {}) {
         await refrescar();
         return { enviado: true };
       } catch (err) {
-        if (err?.code !== 'NETWORK_ERROR') throw err;
+        if (!sePuedeReintentar(err)) throw err;
         await encolar(item);
         await refrescar();
-        return { enviado: false };
+        const requiereLogin = err?.status === 401;
+        if (requiereLogin && montado.current) setRequiereLogin(true);
+        return { enviado: false, requiereLogin };
       }
     },
     [refrescar],

@@ -57,7 +57,8 @@ inscripcionesRouter.patch(
   '/:id',
   requireRole('ATLETA', 'ADMIN'),
   validate([
-    body('dorsal').optional().isInt({ min: 1, max: 65535 }).withMessage('Dorsal entre 1 y 65535').toInt(),
+    // Tope 9999: deja lugar para el dorsal automático (MAX + 1) dentro del SMALLINT de la base
+    body('dorsal').optional().isInt({ min: 1, max: 9999 }).withMessage('Dorsal entre 1 y 9999').toInt(),
     body('estado').optional().isIn(['CONFIRMADA', 'ANULADA']).withMessage('Debe ser CONFIRMADA o ANULADA'),
   ]),
   async (req, res) => {

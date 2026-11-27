@@ -710,7 +710,7 @@ paths:
             schema:
               type: object
               properties:
-                dorsal: { type: integer, minimum: 1, example: 12 }
+                dorsal: { type: integer, minimum: 1, maximum: 9999, example: 12 }
                 estado: { type: string, enum: [CONFIRMADA, ANULADA] }
       responses:
         '200':

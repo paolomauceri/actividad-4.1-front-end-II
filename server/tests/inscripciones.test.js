@@ -286,3 +286,35 @@ describe('documentación OpenAPI', () => {
     );
   });
 });
+
+describe('Revisión final: datos fuera de rango o con forma inválida', () => {
+  it('un dorsal enviado como arreglo responde 400 (no 500)', async () => {
+    const { prueba } = await torneoAbierto();
+    const ana = await nuevoAtleta();
+    const { body } = await inscribir(ana.token, { pruebaId: prueba.id });
+
+    const res = await request(app)
+      .patch(`/api/inscripciones/${body.inscripcion.id}`)
+      .set(auth(adminToken))
+      .send({ dorsal: [7] });
+
+    expect(res.status).toBe(400);
+    expect(res.body.error.details.map((d) => d.campo)).toContain('dorsal');
+  });
+
+  it('el dorsal máximo es 9999 y la inscripción siguiente sigue funcionando', async () => {
+    const { prueba } = await torneoAbierto();
+    const ana = await nuevoAtleta();
+    const { body } = await inscribir(ana.token, { pruebaId: prueba.id });
+    const patch = (dorsal) =>
+      request(app).patch(`/api/inscripciones/${body.inscripcion.id}`).set(auth(adminToken)).send({ dorsal });
+
+    expect((await patch(65535)).status).toBe(400);
+    expect((await patch(9999)).status).toBe(200);
+
+    const bea = await nuevoAtleta();
+    const res = await inscribir(bea.token, { pruebaId: prueba.id });
+    expect(res.status).toBe(201);
+    expect(res.body.inscripcion.dorsal).toBe(10000);
+  });
+});

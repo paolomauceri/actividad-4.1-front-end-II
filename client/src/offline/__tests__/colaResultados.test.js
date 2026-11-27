@@ -1,6 +1,6 @@
 import { clear } from 'idb-keyval';
 import { ApiError } from '../../api/client.js';
-import { descartar, encolar, listarCola, sincronizar } from '../colaResultados.js';
+import { descartar, encolar, esperarSincronizacion, listarCola, sincronizar } from '../colaResultados.js';
 
 const item = (inscripcionId, over = {}) => ({
   inscripcionId,
@@ -108,5 +108,43 @@ describe('colaResultados', () => {
     await Promise.all([sincronizar(enviar), sincronizar(enviar)]);
 
     expect(enviar).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('colaResultados: carreras con un guardado directo', () => {
+  it('no reenvía un ítem que se quitó de la cola mientras se enviaba otro', async () => {
+    await encolar(item(3));
+    await encolar(item(7));
+    let soltar;
+    const lento = new Promise((r) => {
+      soltar = r;
+    });
+    const enviar = jest.fn(async (i) => {
+      if (i.inscripcionId === 3) await lento;
+    });
+
+    const sync = sincronizar(enviar);
+    await new Promise((r) => setTimeout(r, 20));
+    await descartar(7); // el juez volvió a guardar el 7 directo y salió bien
+    soltar();
+    await sync;
+
+    expect(enviar.mock.calls.map(([i]) => i.inscripcionId)).toEqual([3]);
+  });
+
+  it('esperarSincronizacion espera a la que está en curso', async () => {
+    await encolar(item(1));
+    let soltar;
+    const enviar = jest.fn(() => new Promise((r) => { soltar = r; }));
+    const sync = sincronizar(enviar);
+    let termino = false;
+    const espera = esperarSincronizacion().then(() => { termino = true; });
+
+    await new Promise((r) => setTimeout(r, 20));
+    expect(termino).toBe(false);
+    soltar();
+    await sync;
+    await espera;
+    expect(termino).toBe(true);
   });
 });

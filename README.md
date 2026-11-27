@@ -50,6 +50,8 @@ Aplicación web progresiva para administrar torneos de **natación, aguas abiert
 | Wireframes, mapa de navegación y guía de estilo | [docs/02-ui-ux/](docs/02-ui-ux/) |
 | Diagrama de base de datos | [docs/03-base-de-datos/](docs/03-base-de-datos/) |
 | Manual técnico (diagramas de flujo, capturas, instalación) | [docs/04-manual-tecnico/manual-tecnico.md](docs/04-manual-tecnico/manual-tecnico.md) |
+| Informe de pruebas y errores corregidos | [docs/05-pruebas/informe-pruebas.md](docs/05-pruebas/informe-pruebas.md) — colección Postman en [docs/05-pruebas/postman/](docs/05-pruebas/postman/) |
+| Guía de despliegue (Render + Aiven) | [docs/06-despliegue/despliegue-render-aiven.md](docs/06-despliegue/despliegue-render-aiven.md) |
 
 ## Inicio rápido
 
@@ -69,3 +71,10 @@ Aplicación web progresiva para administrar torneos de **natación, aguas abiert
    - Web: http://localhost:5173
    - API: http://localhost:3000/api
    - Documentación API: http://localhost:3000/api/docs
+5. Pruebas:
+   ```bash
+   npm test               # Jest (cliente) + Vitest (API)
+   npm run test:postman   # colección Postman con Newman → docs/05-pruebas/reportes/
+   ```
+
+Usuarios de demostración: `admin@podio.local / Admin123!`, `juez@podio.local / Juez123!`, `valentina@podio.local / Atleta123!`.

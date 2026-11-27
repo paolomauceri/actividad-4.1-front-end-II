@@ -1,5 +1,5 @@
 import { CalendarDays, MapPin, RefreshCw, Timer, Users } from 'lucide-react';
-import { listarTorneos, obtenerTorneo } from '../../api/torneos.js';
+import { torneoPublico, torneosPublicos } from '../../api/torneos.js';
 import { useApi } from '../../hooks/useApi.js';
 import { PageHeader } from '../../components/panel/PageHeader.jsx';
 import { Alert } from '../../components/ui/Alert.jsx';
@@ -13,9 +13,9 @@ import styles from '../../components/juez/Juez.module.css';
 
 /** Torneos en los estados pedidos, cada uno con sus pruebas (sin las canceladas). */
 async function cargarTorneos(estados, signal) {
-  const listas = await Promise.all(estados.map((estado) => listarTorneos({ estado, limit: 50 }, signal)));
+  const listas = await Promise.all(estados.map((estado) => torneosPublicos({ estado, limit: 50 }, signal)));
   const torneos = listas.flatMap((l) => l.datos);
-  const detalles = await Promise.all(torneos.map((t) => obtenerTorneo(t.id, signal)));
+  const detalles = await Promise.all(torneos.map((t) => torneoPublico(t.id, signal)));
   return detalles.map(({ torneo }) => ({ ...torneo, pruebas: torneo.pruebas.filter((p) => p.estado !== 'CANCELADA') }));
 }
 

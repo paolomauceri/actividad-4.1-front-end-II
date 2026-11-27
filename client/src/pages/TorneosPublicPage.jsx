@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CalendarDays, Flag, MapPin, RefreshCw } from 'lucide-react';
-import { listarTorneos } from '../api/torneos.js';
+import { torneosPublicos } from '../api/torneos.js';
 import { useApi } from '../hooks/useApi.js';
 import { Alert } from '../components/ui/Alert.jsx';
 import { Badge } from '../components/ui/Badge.jsx';
@@ -27,7 +27,7 @@ const FILTROS = [
 export default function TorneosPublicPage() {
   const [estado, setEstado] = useState('');
   const { datos, cargando, error, recargar } = useApi(
-    (signal) => listarTorneos({ estado, limit: 50 }, signal),
+    (signal) => torneosPublicos({ estado, limit: 50 }, signal),
     [estado],
   );
 

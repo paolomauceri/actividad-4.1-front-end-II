@@ -1,7 +1,8 @@
 // Estado global de la sesión: usuario actual, login, registro y logout.
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { apiFetch } from '../api/client.js';
-import { clearToken, getToken, setToken } from '../api/token.js';
+import { clearToken, getToken, getUsuarioGuardado, setToken, setUsuarioGuardado } from '../api/token.js';
+import { borrarCopias } from '../offline/copiaLocal.js';
 
 export const AuthContext = createContext(null);
 
@@ -14,11 +15,17 @@ export function AuthProvider({ children }) {
     if (!getToken()) return undefined;
     const controller = new AbortController();
     apiFetch('/api/auth/me', { signal: controller.signal })
-      .then((data) => setUsuario(data.usuario))
-      .catch(() => {
+      .then((data) => {
+        setUsuario(data.usuario);
+        setUsuarioGuardado(data.usuario);
+      })
+      .catch((err) => {
         // Si el token es inválido o expiró (401), apiFetch ya lo borró.
-        // Ante otros errores (servidor o base de datos caídos) se conserva
-        // para no cerrar la sesión por una falla temporal.
+        // Ante otros errores (sin red, servidor o base de datos caídos) se conserva
+        // y se usa el último usuario guardado: el juez puede seguir sin conexión.
+        if (err?.name === 'AbortError' || err?.status === 401) return;
+        const guardado = getUsuarioGuardado();
+        if (guardado && getToken()) setUsuario(guardado);
       })
       .finally(() => {
         if (!controller.signal.aborted) setCargando(false);
@@ -36,6 +43,7 @@ export function AuthProvider({ children }) {
   const iniciarSesion = useCallback(async (data) => {
     setToken(data.token);
     setUsuario(data.usuario);
+    setUsuarioGuardado(data.usuario);
     return data.usuario;
   }, []);
 
@@ -52,6 +60,7 @@ export function AuthProvider({ children }) {
 
   const logout = useCallback(() => {
     clearToken();
+    borrarCopias();
     setUsuario(null);
   }, []);
 

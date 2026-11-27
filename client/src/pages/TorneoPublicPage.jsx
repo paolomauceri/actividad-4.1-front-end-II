@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, CalendarDays, ListOrdered, MapPin, RefreshCw, UserPlus } from 'lucide-react';
-import { obtenerTorneo } from '../api/torneos.js';
+import { torneoPublico } from '../api/torneos.js';
 import { useAuth } from '../auth/AuthContext.jsx';
 import { useApi } from '../hooks/useApi.js';
 import { Alert } from '../components/ui/Alert.jsx';
@@ -16,7 +16,7 @@ import styles from './PublicPages.module.css';
 export default function TorneoPublicPage() {
   const { id } = useParams();
   const { usuario } = useAuth();
-  const { datos, cargando, error, recargar } = useApi((signal) => obtenerTorneo(id, signal), [id]);
+  const { datos, cargando, error, recargar } = useApi((signal) => torneoPublico(id, signal), [id]);
 
   if (cargando) {
     return (

@@ -175,6 +175,40 @@ describe('RegistroTiemposPage', () => {
     await waitFor(() => expect(screen.queryByText('La inscripción está anulada.')).not.toBeInTheDocument());
   });
 
+  it('con la sesión vencida (401) el tiempo queda guardado en el dispositivo', async () => {
+    mockApi({
+      'GET /api/pruebas/5/resultados': resultados(),
+      'GET /api/inscripciones': INSCRITOS,
+      'PUT /api/inscripciones/26/resultado': [401, { error: { code: 'UNAUTHORIZED', message: 'Tu sesión no es válida o expiró.' } }],
+    });
+    const user = userEvent.setup();
+    renderPagina();
+    await screen.findByRole('heading', { name: 'Triatlón sprint' });
+
+    await user.type(screen.getByLabelText(/dorsal/i), '301');
+    await user.click(screen.getByRole('button', { name: /no largó/i }));
+
+    expect(await screen.findByText(/se enviará cuando vuelvas a iniciar sesión/i)).toBeInTheDocument();
+    expect(await screen.findByText('1 pendiente de envío')).toBeInTheDocument();
+  });
+
+  it('sin red usa la última lista de inscritos guardada en el dispositivo', async () => {
+    const primera = renderPagina();
+    await screen.findByRole('table', { name: 'Inscritos' });
+    primera.unmount();
+
+    const api = global.fetch;
+    global.fetch = jest.fn((path, op = {}) =>
+      path.startsWith('/api/inscripciones') ? Promise.reject(new TypeError('Failed to fetch')) : api(path, op),
+    );
+    const user = userEvent.setup();
+    renderPagina();
+    await screen.findByRole('table', { name: 'Inscritos' });
+
+    await user.type(screen.getByLabelText(/dorsal/i), '301');
+    expect(within(screen.getByRole('region', { name: /atleta seleccionado/i })).getByText('Camila Torres')).toBeInTheDocument();
+  });
+
   it('muestra el error del servidor', async () => {
     mockApi({
       'GET /api/pruebas/5/resultados': resultados(),

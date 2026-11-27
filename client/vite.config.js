@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
+import { esApiPublicaCacheable } from './src/pwa/cacheApi.js';
 
 export default defineConfig({
   plugins: [
@@ -43,11 +44,9 @@ export default defineConfig({
             },
           },
           {
-            // Datos públicos ya visitados (torneos, detalle, resultados, deportes): sin
-            // conexión se muestra la última copia. Siempre se intenta la red primero.
-            urlPattern: ({ url, request }) =>
-              request.method === 'GET' &&
-              /^\/api\/(torneos(\/\d+)?|pruebas\/\d+\/resultados|deportes)$/.test(url.pathname),
+            // Datos públicos ya visitados (torneos, detalle, resultados, deportes) pedidos
+            // sin token: sin conexión se muestra la última copia. Siempre se intenta la red primero.
+            urlPattern: esApiPublicaCacheable,
             handler: 'NetworkFirst',
             options: {
               cacheName: 'api-publica',

@@ -48,3 +48,31 @@ describe('AuthProvider al abrir la app con un token guardado', () => {
     expect(localStorage.getItem(TOKEN_KEY)).toBeNull();
   });
 });
+
+describe('AuthProvider sin conexión (juez con la app recargada sin red)', () => {
+  const USUARIO_KEY = 'torneos.usuario';
+
+  it('sin red usa el último usuario guardado en este dispositivo', async () => {
+    setToken('token-valido');
+    localStorage.setItem(USUARIO_KEY, JSON.stringify({ id: 2, nombre: 'Marco', rol: 'JUEZ' }));
+    fetch.mockImplementation(() => Promise.reject(new TypeError('Failed to fetch')));
+
+    render(<AuthProvider><EstadoSesion /></AuthProvider>);
+
+    expect(await screen.findByText('sesión de Marco')).toBeInTheDocument();
+  });
+
+  it('guarda el usuario al recuperarlo y lo olvida si la sesión venció', async () => {
+    setToken('token-valido');
+    fetch.mockReturnValueOnce(json(200, { usuario: { id: 1, nombre: 'Laura', rol: 'ADMIN' } }));
+    const { unmount } = render(<AuthProvider><EstadoSesion /></AuthProvider>);
+    await screen.findByText('sesión de Laura');
+    expect(JSON.parse(localStorage.getItem(USUARIO_KEY))).toMatchObject({ nombre: 'Laura' });
+    unmount();
+
+    fetch.mockReturnValueOnce(json(401, { error: { code: 'UNAUTHORIZED', message: 'Sesión expirada' } }));
+    render(<AuthProvider><EstadoSesion /></AuthProvider>);
+    expect(await screen.findByText('sin sesión')).toBeInTheDocument();
+    expect(localStorage.getItem(USUARIO_KEY)).toBeNull();
+  });
+});

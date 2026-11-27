@@ -10,11 +10,15 @@
     "db:reset": "npm run db:reset --prefix server",
     "test": "npm test --prefix server && npm test --prefix client",
     "capturas": "node scripts/capturas.mjs",
-    "pdf": "node scripts/generar-pdf.mjs"
+    "pdf": "node scripts/generar-pdf.mjs",
+    "test:postman": "node scripts/postman.mjs",
+    "test:all": "npm test && npm run test:postman"
   },
   "devDependencies": {
     "concurrently": "^9.1.0",
     "marked": "^18.2.1",
+    "newman": "^6.2.3",
+    "newman-reporter-htmlextra": "^1.23.1",
     "playwright-core": "^1.65.1"
   },
   "engines": {

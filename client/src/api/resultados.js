@@ -7,8 +7,9 @@ export const guardarResultado = (inscripcionId, datos) =>
 export const eliminarResultado = (inscripcionId) =>
   apiFetch(`/api/inscripciones/${inscripcionId}/resultado`, { method: 'DELETE' });
 
-/** Clasificación pública de una prueba (por categoría y general). */
-export const resultadosDePrueba = (pruebaId, signal) => apiFetch(`/api/pruebas/${pruebaId}/resultados`, { signal });
+/** Clasificación pública de una prueba (por categoría y general). Sin token: se guarda para verla sin conexión. */
+export const resultadosDePrueba = (pruebaId, signal) =>
+  apiFetch(`/api/pruebas/${pruebaId}/resultados`, { signal, auth: false });
 
 /** Resultados del atleta que inició sesión. */
 export const misResultados = (signal) => apiFetch('/api/resultados/mios', { signal });

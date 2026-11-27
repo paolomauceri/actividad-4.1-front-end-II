@@ -2,6 +2,7 @@ import { useMemo, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, ExternalLink, RefreshCw } from 'lucide-react';
 import { listarInscripciones } from '../../api/inscripciones.js';
+import { conCopia } from '../../offline/copiaLocal.js';
 import { useAuth } from '../../auth/AuthContext.jsx';
 import { useApi } from '../../hooks/useApi.js';
 import { useColaResultados } from '../../hooks/useColaResultados.js';
@@ -39,7 +40,11 @@ export default function RegistroTiemposPage({ volver = '/juez' }) {
   const pruebaId = Number(useParams().pruebaId);
   const { usuario } = useAuth();
   const vivo = useResultadosEnVivo(pruebaId);
-  const inscritos = useApi((signal) => listarInscripciones({ pruebaId }, signal), [pruebaId]);
+  // Con copia local: si el juez recarga sin red sigue pudiendo buscar dorsales
+  const inscritos = useApi(
+    (signal) => conCopia(`inscritos.${pruebaId}`, () => listarInscripciones({ pruebaId }, signal)),
+    [pruebaId],
+  );
   const [dorsal, setDorsal] = useState('');
   const [enviando, setEnviando] = useState(false);
   const [mensaje, setMensaje] = useState(null);
@@ -74,7 +79,7 @@ export default function RegistroTiemposPage({ volver = '/juez' }) {
     setEnviando(true);
     setMensaje(null);
     try {
-      const { enviado } = await cola.guardar({
+      const { enviado, requiereLogin } = await cola.guardar({
         inscripcionId: inscripcion.id,
         pruebaId,
         dorsal: inscripcion.dorsal,
@@ -85,6 +90,11 @@ export default function RegistroTiemposPage({ volver = '/juez' }) {
         setMensaje({ tono: 'success', texto: `Guardado: ${inscripcion.atleta} · ${textoResultado(datos)}` });
         // Sin Socket.IO la clasificación no llega sola: se vuelve a pedir
         if (!vivo.enVivo) vivo.recargar();
+      } else if (requiereLogin) {
+        setMensaje({
+          tono: 'warning',
+          texto: `Tu sesión venció: el tiempo quedó guardado en este dispositivo y se enviará cuando vuelvas a iniciar sesión (${inscripcion.atleta} · ${textoResultado(datos)})`,
+        });
       } else {
         setMensaje({
           tono: 'warning',

@@ -22,7 +22,7 @@ function DorsalDialog({ inscripcion, onClose, onGuardado }) {
 
   const enviar = async (e) => {
     e.preventDefault();
-    if (!/^\d{1,5}$/.test(dorsal) || Number(dorsal) < 1) return setError('Escribe un número de dorsal mayor que 0');
+    if (!/^\d{1,4}$/.test(dorsal) || Number(dorsal) < 1) return setError('Escribe un dorsal entre 1 y 9999');
     setEnviando(true);
     try {
       await actualizarInscripcion(inscripcion.id, { dorsal: Number(dorsal) });

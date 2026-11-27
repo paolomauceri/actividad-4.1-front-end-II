@@ -114,6 +114,9 @@ describe('PUT /api/inscripciones/:id/resultado', () => {
     ['tiempo con texto', { estado: 'FINALIZADO', tiempoMs: 'abc' }, 'tiempoMs'],
     ['estado desconocido', { estado: 'GANADOR', tiempoMs: 1000 }, 'estado'],
     ['observaciones largas', { estado: 'DSQ', observaciones: 'x'.repeat(256) }, 'observaciones'],
+    ['estado como arreglo', { estado: ['DNF'] }, 'estado'],
+    ['tiempo como arreglo', { estado: 'FINALIZADO', tiempoMs: [60000] }, 'tiempoMs'],
+    ['observaciones como objeto', { estado: 'DSQ', observaciones: { a: 1 } }, 'observaciones'],
   ])('rechaza %s con 400', async (_nombre, body, campo) => {
     const { ins } = await torneoEnCurso();
     const res = await guardar(juezToken, ins.ana.id, body);

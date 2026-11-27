@@ -55,8 +55,13 @@ async function resumen(enviados, requiereLogin) {
 
 async function ejecutar(enviar) {
   let enviados = 0;
-  for (const item of await listarCola()) {
-    if (item.estadoCola !== 'PENDIENTE') continue;
+  for (const copia of await listarCola()) {
+    // Se vuelve a leer antes de cada envío: mientras se enviaba otro, el juez pudo
+    // reemplazar o guardar directo este tiempo, y la copia vieja no debe pisarlo.
+    const item = (await listarCola()).find(
+      (i) => i.inscripcionId === copia.inscripcionId && i.encoladoEn === copia.encoladoEn,
+    );
+    if (!item || item.estadoCola !== 'PENDIENTE') continue;
     try {
       await enviar(item);
       await quitarEnviado(item);
@@ -91,4 +96,12 @@ export function sincronizar(enviar) {
     });
   }
   return enCurso;
+}
+
+/** Espera a que termine la sincronización en curso (si hay una). Nunca falla. */
+export function esperarSincronizacion() {
+  return enCurso ? enCurso.then(
+    () => undefined,
+    () => undefined,
+  ) : Promise.resolve();
 }
