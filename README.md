@@ -5,6 +5,8 @@ Aplicación web progresiva para administrar torneos de **natación, aguas abiert
 **Curso:** Taller Front End 2
 **Integrantes:** Brayan Teran · Paolo Mauceri
 
+**Aplicación publicada:** https://podio-k68g.onrender.com/ (Render + Aiven MySQL). La primera visita después de un rato sin uso puede tardar unos 50 segundos, porque el plan gratuito apaga el servidor cuando nadie lo usa.
+
 ## Tecnologías
 
 | Capa | Tecnología |
@@ -52,6 +54,7 @@ Aplicación web progresiva para administrar torneos de **natación, aguas abiert
 | Manual técnico (diagramas de flujo, capturas, instalación) | [docs/04-manual-tecnico/manual-tecnico.md](docs/04-manual-tecnico/manual-tecnico.md) |
 | Informe de pruebas y errores corregidos | [docs/05-pruebas/informe-pruebas.md](docs/05-pruebas/informe-pruebas.md) — colección Postman en [docs/05-pruebas/postman/](docs/05-pruebas/postman/) |
 | Guía de despliegue (Render + Aiven) | [docs/06-despliegue/despliegue-render-aiven.md](docs/06-despliegue/despliegue-render-aiven.md) |
+| Exportación de la base de datos | [database/export/torneos_db.sql](database/export/torneos_db.sql) — estructura, vistas y datos de ejemplo; se importa con `mysql -u usuario -p < database/export/torneos_db.sql` |
 
 ## Inicio rápido
 

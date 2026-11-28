@@ -2,6 +2,9 @@
 .claude/
 .superpowers/
 
+# Entregables para Moodle (manuales y presentación): se suben a mano, no al repositorio
+entregables-moodle/
+
 # Dependencias
 node_modules/
 
